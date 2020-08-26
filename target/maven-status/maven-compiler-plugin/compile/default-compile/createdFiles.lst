@@ -1,0 +1,4 @@
+tsinghua\hic\Application.class
+tsinghua\hic\controller\TestController.class
+tsinghua\hic\controller\VerifyController.class
+tsinghua\hic\commons\swagger\SwaggerConfig.class
