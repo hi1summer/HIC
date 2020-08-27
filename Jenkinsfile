@@ -10,7 +10,8 @@ pipeline {
                         powershell "docker container rm \$(docker container ls -qa)"
                         powershell "docker image rm \$(docker image ls -q -f dangling=true)"
                     }
-                    catch{
+                    catch(exc){
+                        echo 'no container or image'
                     }
                 }
             }
