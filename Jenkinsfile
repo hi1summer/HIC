@@ -29,7 +29,9 @@ pipeline {
         }
         stage('docker') {
             steps {
-                docker.build("hic:${env.BUILD_ID}").run("-p 8000:8080 -t hic -d")
+                script{
+                    docker.build("hic:${env.BUILD_ID}").run("-p 8000:8080 -t hic -d")
+                }
             }
         }
     }
