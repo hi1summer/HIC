@@ -4,9 +4,9 @@ pipeline {
     stages {
         stage('clean') {
             steps {
-                bat "git stop \$(git ps -qa)"
-                bat "git container rm \$(git container ls -qa)"
-                bat "git image rm \$(git image ls -q -f dangling=true)"
+                bat "docker stop \$(docker ps -qa)"
+                bat "docker container rm \$(docker container ls -qa)"
+                bat "docker image rm \$(docker image ls -q -f dangling=true)"
             }
         }
         stage('git') {
