@@ -2,6 +2,19 @@ pipeline {
     agent any
 
     stages {
+        stage('clean') {
+            steps {
+                script{
+                    try{
+                        powershell "docker stop \$(docker ps -qa)"
+                        powershell "docker container rm \$(docker container ls -qa)"
+                        powershell "docker image rm \$(docker image ls -q -f dangling=true)"
+                    }
+                    catch{
+                    }
+                }
+            }
+        }
         stage('git') {
             steps {
                 // Get some code from a GitHub repository
