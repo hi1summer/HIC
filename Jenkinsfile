@@ -22,7 +22,7 @@ pipeline {
                 git branch: 'dev', credentialsId: 'bb001980-a8bf-4143-a1fa-3afcaba854fd', url: 'git@github.com:hi1summer/HIC.git'
             }
         }
-        stage('Build') {
+        stage('build') {
             steps {
                 bat "mvn clean package"
             }
