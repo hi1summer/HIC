@@ -1,77 +1,85 @@
 package tsinghua.hic.pojo.po;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * The persistent class for the producer database table.
- * 
+ *
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
-@NamedQuery(name="Producer.findAll", query="SELECT p FROM Producer p")
+@NamedQuery(name = "Producer.findAll", query = "SELECT p FROM Producer p")
 public class Producer implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	private String producerid;
+    @Id
+    private String producerid;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="create_time")
-	private Date createTime;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "create_time")
+    private Date createTime;
 
-	@Column(name="producer_desc")
-	private String producerDesc;
+    @Column(name = "producer_desc")
+    private String producerDesc;
 
-	@Column(name="producer_name")
-	private String producerName;
+    @Column(name = "producer_name")
+    private String producerName;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="update_time")
-	private Date updateTime;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "update_time")
+    private Date updateTime;
 
-	public Producer() {
-	}
+    public Producer() {
+    }
 
-	public String getProducerid() {
-		return this.producerid;
-	}
+    public String getProducerid() {
+        return producerid;
+    }
 
-	public void setProducerid(String producerid) {
-		this.producerid = producerid;
-	}
+    public void setProducerid(String producerid) {
+        this.producerid = producerid;
+    }
 
-	public Date getCreateTime() {
-		return this.createTime;
-	}
+    public Date getCreateTime() {
+        return createTime;
+    }
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
-	public String getProducerDesc() {
-		return this.producerDesc;
-	}
+    public String getProducerDesc() {
+        return producerDesc;
+    }
 
-	public void setProducerDesc(String producerDesc) {
-		this.producerDesc = producerDesc;
-	}
+    public void setProducerDesc(String producerDesc) {
+        this.producerDesc = producerDesc;
+    }
 
-	public String getProducerName() {
-		return this.producerName;
-	}
+    public String getProducerName() {
+        return producerName;
+    }
 
-	public void setProducerName(String producerName) {
-		this.producerName = producerName;
-	}
+    public void setProducerName(String producerName) {
+        this.producerName = producerName;
+    }
 
-	public Date getUpdateTime() {
-		return this.updateTime;
-	}
+    public Date getUpdateTime() {
+        return updateTime;
+    }
 
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
 }

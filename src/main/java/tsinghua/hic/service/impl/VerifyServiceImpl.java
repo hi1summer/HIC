@@ -1,7 +1,9 @@
 package tsinghua.hic.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tsinghua.hic.dao.ProducthashDao;
 import tsinghua.hic.service.VerifyService;
 
 /**
@@ -13,10 +15,12 @@ import tsinghua.hic.service.VerifyService;
 @Service
 public class VerifyServiceImpl implements VerifyService {
 
+    @Autowired
+    private ProducthashDao producthashDao;
+
     @Override
     public Boolean verify(String gid) {
-        // TODO Auto-generated method stub
-        return null;
+        return producthashDao.findById(gid).isPresent();
     }
 
 }

@@ -1,5 +1,5 @@
 package tsinghua.hic.service;
 
 public interface VerifyService {
-    public Boolean verify(String gid);
+    Boolean verify(String gid);
 }
