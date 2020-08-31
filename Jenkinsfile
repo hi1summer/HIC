@@ -24,11 +24,15 @@ pipeline {
         }
         stage('build') {
             steps {
+                bat "mvn clean package"
+            }
+        }
+        stage('sonar') {
+            steps {
                 bat "mvn sonar:sonar \
                       -Dsonar.projectKey=HIC \
                       -Dsonar.host.url=http://localhost:1001 \
                       -Dsonar.login=8dbd1aa5aaecbf60711560ff1c458d4e0e3597fe"
-                bat "mvn clean package"
             }
         }
         stage('docker') {
