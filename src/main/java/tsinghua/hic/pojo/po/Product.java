@@ -1,70 +1,116 @@
 package tsinghua.hic.pojo.po;
 
+import java.io.Serializable;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
 /**
- * @author summer
- * @Email gonick@163.com
- * @Date 2020年8月31日
- * @Desc
+ * The persistent class for the product database table.
+ * 
  */
 @Entity
-public class Product {
-    @Id
-    private String gid;
-    private Date create_time;
-    private Date update_time;
-    private String product_desc;
-    private String product_name;
+@NamedQuery(name="Product.findAll", query="SELECT p FROM Product p")
+public class Product implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    public String getGid() {
-        return gid;
-    }
+	@Id
+	private String gid;
 
-    public void setGid(String gid) {
-        this.gid = gid;
-    }
+	@Temporal(TemporalType.DATE)
+	@Column(name="create_time")
+	private Date createTime;
 
-    public Date getCreate_time() {
-        return create_time;
-    }
+	@Column(name="product_desc")
+	private String productDesc;
 
-    public void setCreate_time(Date create_time) {
-        this.create_time = create_time;
-    }
+	@Column(name="product_name")
+	private String productName;
 
-    public Date getUpdate_time() {
-        return update_time;
-    }
+	@Temporal(TemporalType.DATE)
+	@Column(name="update_time")
+	private Date updateTime;
 
-    public void setUpdate_time(Date update_time) {
-        this.update_time = update_time;
-    }
+	//bi-directional one-to-one association to Producthash
+	@OneToOne(mappedBy="product")
+	private Producthash producthash;
 
-    public String getProduct_desc() {
-        return product_desc;
-    }
+	//bi-directional many-to-one association to Productinfo
+	@OneToMany(mappedBy="product")
+	private List<Productinfo> productinfos;
 
-    public void setProduct_desc(String product_desc) {
-        this.product_desc = product_desc;
-    }
+	public Product() {
+	}
 
-    public String getProduct_name() {
-        return product_name;
-    }
+	public String getGid() {
+		return this.gid;
+	}
 
-    public void setProduct_name(String product_name) {
-        this.product_name = product_name;
-    }
+	public void setGid(String gid) {
+		this.gid = gid;
+	}
 
-    @Override
-    public String toString() {
-        return "Product [gid=" + gid + ", create_time=" + create_time
-                + ", update_time=" + update_time + ", product_desc="
-                + product_desc + ", product_name=" + product_name + "]";
-    }
+	public Date getCreateTime() {
+		return this.createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getProductDesc() {
+		return this.productDesc;
+	}
+
+	public void setProductDesc(String productDesc) {
+		this.productDesc = productDesc;
+	}
+
+	public String getProductName() {
+		return this.productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public Date getUpdateTime() {
+		return this.updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public Producthash getProducthash() {
+		return this.producthash;
+	}
+
+	public void setProducthash(Producthash producthash) {
+		this.producthash = producthash;
+	}
+
+	public List<Productinfo> getProductinfos() {
+		return this.productinfos;
+	}
+
+	public void setProductinfos(List<Productinfo> productinfos) {
+		this.productinfos = productinfos;
+	}
+
+	public Productinfo addProductinfo(Productinfo productinfo) {
+		getProductinfos().add(productinfo);
+		productinfo.setProduct(this);
+
+		return productinfo;
+	}
+
+	public Productinfo removeProductinfo(Productinfo productinfo) {
+		getProductinfos().remove(productinfo);
+		productinfo.setProduct(null);
+
+		return productinfo;
+	}
 
 }
