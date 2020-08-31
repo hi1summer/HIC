@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class VerifyController {
     @GetMapping("/verifygid/{gid}")
     public ResponseEntity<Boolean> verifyGid(@PathVariable String gid) {
-        System.out.println(gid);
         return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
 }
