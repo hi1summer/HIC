@@ -1,5 +1,6 @@
 package tsinghua.hic.service.impl;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javassist.NotFoundException;
@@ -29,7 +31,8 @@ public class HashGenerateServiceImpl implements HashGenerateService {
     private ProducthashDao producthashDao;
 
     @Override
-    public void generate(String gid) throws Exception {
+    public void generate(String gid) throws NotFoundException,
+            JsonProcessingException, NoSuchAlgorithmException {
         StringBuilder contentString = new StringBuilder();
         Optional<Product> productOptional = productDao.findById(gid);
         if (productOptional.isEmpty()) {
@@ -40,6 +43,7 @@ public class HashGenerateServiceImpl implements HashGenerateService {
             ObjectMapper mapper = new ObjectMapper();
             contentString.append(mapper.writeValueAsString(product));
             contentString.append(mapper.writeValueAsString(productinfos));
+
             EncryptWithSHA256 encryptWithSHA256 = new EncryptWithSHA256();
             String digestString = encryptWithSHA256
                     .encrypt(contentString.toString());

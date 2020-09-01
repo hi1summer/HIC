@@ -1,6 +1,7 @@
 package tsinghua.hic.commons;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @author summer
@@ -11,7 +12,7 @@ import java.security.MessageDigest;
 public class EncryptWithSHA256 {
     private static String algorithmString = "SHA-256";
 
-    public String encrypt(String content) throws Exception {
+    public String encrypt(String content) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance(algorithmString);
         md.update(content.getBytes());
         byte[] byteBuffer = md.digest();
