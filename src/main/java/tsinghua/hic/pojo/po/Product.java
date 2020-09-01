@@ -50,7 +50,7 @@ public class Product implements Serializable {
     private Producthash producthash;
 
     // bi-directional many-to-one association to Productinfo
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Productinfo> productinfos;
 
