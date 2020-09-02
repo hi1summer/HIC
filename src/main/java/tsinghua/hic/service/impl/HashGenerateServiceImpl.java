@@ -44,14 +44,11 @@ public class HashGenerateServiceImpl implements HashGenerateService {
             contentString.append(mapper.writeValueAsString(product));
             contentString.append(mapper.writeValueAsString(productinfos));
 
-            logger.info("content string: " + contentString.toString());
             EncryptWithSHA256 encryptWithSHA256 = new EncryptWithSHA256();
             String digestString = encryptWithSHA256
                     .encrypt(contentString.toString());
-            logger.info("gid + digest string: " + gid + digestString);
             String seconddigestString = encryptWithSHA256
                     .encrypt(gid + digestString);
-            logger.info("seconddigestString: " + seconddigestString.toString());
             Producthash producthash = new Producthash();
             producthash.setGid(gid);
             producthash.setHash(seconddigestString);
