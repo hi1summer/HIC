@@ -20,7 +20,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Entity
 @NamedQuery(name = "Producthash.findAll", query = "SELECT p FROM Producthash p")
 public class Producthash implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -3213362254571359317L;
 
     @Id
     private String gid;

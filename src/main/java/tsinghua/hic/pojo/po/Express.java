@@ -10,6 +10,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -20,13 +21,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Entity
 @NamedQuery(name = "Express.findAll", query = "SELECT e FROM Express e")
 public class Express implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -2050840160166084797L;
 
     @Id
     private String expressid;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "create_time")
+    @JsonIgnore
     private Date createTime;
 
     @Column(name = "express_desc")
@@ -37,6 +40,7 @@ public class Express implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "update_time")
+    @JsonIgnore
     private Date updateTime;
 
     public Express() {

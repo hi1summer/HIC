@@ -25,7 +25,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Entity
 @NamedQuery(name = "Productinfo.findAll", query = "SELECT p FROM Productinfo p")
 public class Productinfo implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -5718510996893076068L;
 
     @Id
     private String productinfoid;
@@ -35,6 +36,7 @@ public class Productinfo implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "create_time")
+    @JsonIgnore
     private Date createTime;
 
     @Column(name = "express_desc")
@@ -66,6 +68,7 @@ public class Productinfo implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "update_time")
+    @JsonIgnore
     private Date updateTime;
 
     // bi-directional many-to-one association to Product

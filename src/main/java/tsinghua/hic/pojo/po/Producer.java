@@ -10,6 +10,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -20,13 +21,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Entity
 @NamedQuery(name = "Producer.findAll", query = "SELECT p FROM Producer p")
 public class Producer implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 7556686711416902175L;
 
     @Id
     private String producerid;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "create_time")
+    @JsonIgnore
     private Date createTime;
 
     @Column(name = "producer_desc")
@@ -37,6 +40,7 @@ public class Producer implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "update_time")
+    @JsonIgnore
     private Date updateTime;
 
     public Producer() {

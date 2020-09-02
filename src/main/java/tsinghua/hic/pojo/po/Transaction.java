@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -22,13 +23,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Table(name = "transactions")
 @NamedQuery(name = "Transaction.findAll", query = "SELECT t FROM Transaction t")
 public class Transaction implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 6109701414432072333L;
 
     @Id
     private String transactionid;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "create_time")
+    @JsonIgnore
     private Date createTime;
 
     @Column(name = "transaction_desc")
@@ -39,6 +42,7 @@ public class Transaction implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "update_time")
+    @JsonIgnore
     private Date updateTime;
 
     public Transaction() {

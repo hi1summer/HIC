@@ -25,13 +25,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Entity
 @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
 public class Product implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 8319595579676546991L;
 
     @Id
     private String gid;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "create_time")
+    @JsonIgnore
     private Date createTime;
 
     @Column(name = "product_desc")
@@ -42,6 +44,7 @@ public class Product implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "update_time")
+    @JsonIgnore
     private Date updateTime;
 
     // bi-directional one-to-one association to Producthash
