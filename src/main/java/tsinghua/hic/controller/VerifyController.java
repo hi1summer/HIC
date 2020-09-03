@@ -21,7 +21,7 @@ public class VerifyController {
     @GetMapping("/verifygid/{gid}")
     public ResponseEntity<Boolean> verifyGid(
             @PathVariable(required = true) String gid) {
-        if (gid == null || gid.isBlank()) {
+        if (gid == null || gid.trim().isEmpty()) {
             logger.warn("bad request");
             return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
         }
