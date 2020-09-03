@@ -20,7 +20,7 @@ public class VerifyServiceImpl implements VerifyService {
 
     @Override
     public Boolean verify(String gid) {
-        return producthashDao.findById(gid).isPresent();
+        return producthashDao.findByHash(gid).isPresent();
     }
 
 }
