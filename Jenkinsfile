@@ -6,20 +6,19 @@ pipeline {
             steps {
                 script{
                     try{
-                        powershell "docker stop \$(docker ps -qa)"
-                        powershell "docker container rm \$(docker container ls -qa)"
-                        powershell "docker image rm \$(docker image ls hic -qa)"
+                        powershell "docker stop \$(docker ps --filter name=hic -qa)"
+                        powershell "docker container rm \$(docker ps --filter name=hic -qa)"
                     }
                     catch(exc){
-                        echo 'no container or image'
+                        echo 'no container'
+                    }
+                    try {
+                        powershell "docker image rm \$(docker image ls --filter reference=hic -qa)"
+                    }
+                    catch(exc){
+                        echo 'no image'
                     }
                 }
-            }
-        }
-        stage('git') {
-            steps {
-                // Get some code from a GitHub repository
-                git branch: 'dev', credentialsId: 'bb001980-a8bf-4143-a1fa-3afcaba854fd', url: 'git@github.com:hi1summer/HIC.git'
             }
         }
         stage('build') {
@@ -38,7 +37,8 @@ pipeline {
         stage('docker') {
             steps {
                 script{
-                    docker.build("hic:${env.BUILD_ID}").run("-p 8000:8000 --restart=always")
+                    docker.build("hic:${env.BUILD_ID}")
+                        .run("-p 8000:8000 --name hic.${env.BUILD_ID} --restart=always")
                 }
             }
         }
