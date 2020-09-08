@@ -38,10 +38,10 @@ pipeline {
             steps {
                 script{
                     image = docker.build("hic:${env.BUILD_ID}")
-                    image.run("-p 7700:8000 --name hic.${env.BUILD_ID} --restart=always")
-                    image.run("-p 7800:8000 --name hic.${env.BUILD_ID} --restart=always")
-                    image.run("-p 7900:8000 --name hic.${env.BUILD_ID} --restart=always")
-                    image.run("-p 8000:8000 --name hic.${env.BUILD_ID} --restart=always")
+                    image.run("-p 7700:8000 --name hic1.${env.BUILD_ID} --restart=always")
+                    image.run("-p 7800:8000 --name hic2.${env.BUILD_ID} --restart=always")
+                    image.run("-p 7900:8000 --name hic3.${env.BUILD_ID} --restart=always")
+                    image.run("-p 8000:8000 --name hic4.${env.BUILD_ID} --restart=always")
                 }
             }
         }
