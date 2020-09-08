@@ -37,8 +37,11 @@ pipeline {
         stage('docker') {
             steps {
                 script{
-                    docker.build("hic:${env.BUILD_ID}")
-                        .run("-p 8000:8000 --name hic.${env.BUILD_ID} --restart=always")
+                    image = docker.build("hic:${env.BUILD_ID}")
+                    image.run("-p 7700:8000 --name hic.${env.BUILD_ID} --restart=always")
+                    image.run("-p 7800:8000 --name hic.${env.BUILD_ID} --restart=always")
+                    image.run("-p 7900:8000 --name hic.${env.BUILD_ID} --restart=always")
+                    image.run("-p 8000:8000 --name hic.${env.BUILD_ID} --restart=always")
                 }
             }
         }
