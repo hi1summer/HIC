@@ -35,12 +35,17 @@ public class TestController {
     private static final Logger log = LoggerFactory
             .getLogger(TestController.class);
 
-    public ResponseEntity<String> home() {
+    public ResponseEntity<String> home2Hystrix() {
         return new ResponseEntity<String>("HYSTRIX",
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @HystrixCommand(fallbackMethod = "home")
+    public ResponseEntity<String> home3Hystrix(String gid) {
+        return new ResponseEntity<String>("HYSTRIX",
+                HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @HystrixCommand(fallbackMethod = "home2Hystrix")
     @GetMapping("/test1")
     public ResponseEntity<String> home2() {
         ObjectMapper mapper = new ObjectMapper();
@@ -54,7 +59,7 @@ public class TestController {
         return new ResponseEntity<String>("OK", HttpStatus.OK);
     }
 
-    @HystrixCommand(fallbackMethod = "home")
+    @HystrixCommand(fallbackMethod = "home3Hystrix")
     @GetMapping("/test2/{gid}")
     public ResponseEntity<String> home3(
             @PathVariable(required = true) String gid) {

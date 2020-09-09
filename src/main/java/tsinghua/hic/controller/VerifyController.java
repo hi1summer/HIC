@@ -20,12 +20,12 @@ public class VerifyController {
     @Autowired
     private VerifyService verifyService;
 
-    public ResponseEntity<Boolean> home() {
+    public ResponseEntity<Boolean> verifyGidHystrix(String gid) {
         return new ResponseEntity<Boolean>(false,
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @HystrixCommand(fallbackMethod = "home")
+    @HystrixCommand(fallbackMethod = "verifyGidHystrix")
     @GetMapping("/verifygid/{gid}")
     public ResponseEntity<Boolean> verifyGid(
             @PathVariable(required = true) String gid) {
