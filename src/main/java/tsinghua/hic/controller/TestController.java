@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import tsinghua.hic.dao.ProductDao;
 import tsinghua.hic.service.HashGenerateService;
@@ -34,11 +35,12 @@ public class TestController {
     private static final Logger log = LoggerFactory
             .getLogger(TestController.class);
 
-    @GetMapping("/test")
-    public ResponseEntity<String> home(int index) {
-        return new ResponseEntity<String>("OK", HttpStatus.OK);
+    public ResponseEntity<String> home() {
+        return new ResponseEntity<String>("HYSTRIX",
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @HystrixCommand(fallbackMethod = "home")
     @GetMapping("/test1")
     public ResponseEntity<String> home2() {
         ObjectMapper mapper = new ObjectMapper();
@@ -52,6 +54,7 @@ public class TestController {
         return new ResponseEntity<String>("OK", HttpStatus.OK);
     }
 
+    @HystrixCommand(fallbackMethod = "home")
     @GetMapping("/test2/{gid}")
     public ResponseEntity<String> home3(
             @PathVariable(required = true) String gid) {
