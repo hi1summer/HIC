@@ -34,6 +34,7 @@ public class VerifyController {
             return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
         }
         try {
+            Thread.sleep(1000);
             Boolean exist = verifyService.verify(gid);
             if (exist) {
                 logger.info("exist" + gid);
