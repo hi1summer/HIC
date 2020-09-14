@@ -22,8 +22,7 @@ public class VerifyController {
 
     public ResponseEntity<Boolean> verifyGidHystrix(String gid) {
         logger.error("hystrixverifygid");
-        return new ResponseEntity<Boolean>(false,
-                HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<Boolean>(false, HttpStatus.TOO_MANY_REQUESTS);
     }
 
     @HystrixCommand(fallbackMethod = "verifyGidHystrix")

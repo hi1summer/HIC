@@ -38,13 +38,13 @@ public class TestController {
     public ResponseEntity<String> home2Hystrix() {
         log.error("hystrixtest2");
         return new ResponseEntity<String>("HYSTRIX",
-                HttpStatus.INTERNAL_SERVER_ERROR);
+                HttpStatus.TOO_MANY_REQUESTS);
     }
 
     public ResponseEntity<String> home3Hystrix(String gid) {
         log.error("hystrixtest3");
         return new ResponseEntity<String>("HYSTRIX",
-                HttpStatus.INTERNAL_SERVER_ERROR);
+                HttpStatus.TOO_MANY_REQUESTS);
     }
 
     @HystrixCommand(fallbackMethod = "home2Hystrix")
