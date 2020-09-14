@@ -21,6 +21,7 @@ public class VerifyController {
     private VerifyService verifyService;
 
     public ResponseEntity<Boolean> verifyGidHystrix(String gid) {
+        logger.error("hystrixverifygid");
         return new ResponseEntity<Boolean>(false,
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }

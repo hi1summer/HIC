@@ -36,11 +36,13 @@ public class TestController {
             .getLogger(TestController.class);
 
     public ResponseEntity<String> home2Hystrix() {
+        log.error("hystrixtest2");
         return new ResponseEntity<String>("HYSTRIX",
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public ResponseEntity<String> home3Hystrix(String gid) {
+        log.error("hystrixtest3");
         return new ResponseEntity<String>("HYSTRIX",
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -66,7 +68,7 @@ public class TestController {
         try {
             hashGenerateService.generate(gid);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
 
         return new ResponseEntity<String>("OK", HttpStatus.OK);
