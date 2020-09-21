@@ -3,19 +3,24 @@
  */
 package tsinghua.hic.controller;
 
+import java.awt.image.BufferedImage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
+import tsinghua.hic.commons.GenerateQRCode;
 import tsinghua.hic.dao.ProductDao;
 import tsinghua.hic.service.HashGenerateService;
 
@@ -72,6 +77,19 @@ public class TestController {
         }
 
         return new ResponseEntity<String>("OK", HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/qr/{gid}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody
+    public BufferedImage getQRCode(@PathVariable(required = true) String gid) {
+        GenerateQRCode generateQRCode = new GenerateQRCode();
+        try {
+            return generateQRCode.QREncode(300, 300,
+                    "http://hic:9000/hic/v1/verifygid/" + gid);
+        } catch (Exception e) {
+            log.error("gen failed");
+            return null;
+        }
     }
 
 }
