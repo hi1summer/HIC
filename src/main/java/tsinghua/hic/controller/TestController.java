@@ -4,6 +4,9 @@
 package tsinghua.hic.controller;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+
+import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,15 +82,34 @@ public class TestController {
         return new ResponseEntity<String>("OK", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/qr/{gid}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/qr/{gid}", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
-    public BufferedImage getQRCode(@PathVariable(required = true) String gid) {
+    public byte[] getQRCode(@PathVariable(required = true) String gid) {
         GenerateQRCode generateQRCode = new GenerateQRCode();
         try {
-            return generateQRCode.QREncode(300, 300,
-                    "http://hic:9000/hic/v1/verifygid/" + gid);
+            BufferedImage bufferedImage = generateQRCode.QREncode(300, 300,
+                    "http://192.168.1.112:8000/verifygid/" + gid);
+            ByteArrayOutputStream myOutputStream = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "jpeg", myOutputStream);
+            return myOutputStream.toByteArray();
         } catch (Exception e) {
-            log.error("gen failed");
+            log.error("gen failed" + e.getLocalizedMessage());
+            return null;
+        }
+    }
+
+    @GetMapping(value = "/qr2/{gid}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody
+    public byte[] getQRCode2(@PathVariable(required = true) String gid) {
+        GenerateQRCode generateQRCode = new GenerateQRCode();
+        try {
+            BufferedImage bufferedImage = generateQRCode.QREncode(300, 300,
+                    "demo text: http://192.168.1.112:8000/verifygid/" + gid);
+            ByteArrayOutputStream myOutputStream = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "jpeg", myOutputStream);
+            return myOutputStream.toByteArray();
+        } catch (Exception e) {
+            log.error("gen failed" + e.getLocalizedMessage());
             return null;
         }
     }
