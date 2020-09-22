@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
+import net.bytebuddy.asm.Advice.This;
 import tsinghua.hic.service.VerifyService;
 
-@RequestMapping("/")
+@RequestMapping
 public class VerifyController {
-    private static final Logger logger = LoggerFactory
-            .getLogger(VerifyController.class);
+    private static final Logger log = LoggerFactory.getLogger(This.class);
     @Autowired
     private VerifyService verifyService;
 
     public ResponseEntity<Boolean> verifyGidHystrix(String gid) {
-        logger.error("hystrixverifygid");
+        log.error("hystrixverifygid");
         return new ResponseEntity<Boolean>(false, HttpStatus.TOO_MANY_REQUESTS);
     }
 
@@ -30,19 +30,19 @@ public class VerifyController {
     public ResponseEntity<Boolean> verifyGid(
             @PathVariable(required = true) String gid) {
         if (gid == null || gid.trim().isEmpty()) {
-            logger.warn("bad request");
+            log.warn("bad request");
             return new ResponseEntity<Boolean>(false, HttpStatus.BAD_REQUEST);
         }
         try {
             Boolean exist = verifyService.verify(gid);
             if (exist) {
-                logger.info("exist" + gid);
+                log.info("exist" + gid);
             } else {
-                logger.info("not exist" + gid);
+                log.info("not exist" + gid);
             }
             return new ResponseEntity<Boolean>(exist, HttpStatus.OK);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             return new ResponseEntity<Boolean>(false,
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
