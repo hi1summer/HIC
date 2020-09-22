@@ -3,17 +3,12 @@
  */
 package tsinghua.hic.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-
-import javax.imageio.ImageIO;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,36 +77,39 @@ public class TestController {
         return new ResponseEntity<String>("OK", HttpStatus.OK);
     }
 
-    @GetMapping(value = "/qr/{gid}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/qr/{gid}")
     @ResponseBody
-    public byte[] getQRCode(@PathVariable(required = true) String gid) {
+    public String getQRCode(@PathVariable(required = true) String gid) {
         GenerateQRCode generateQRCode = new GenerateQRCode();
         try {
-            BufferedImage bufferedImage = generateQRCode.QREncode(300, 300,
+            String imgSrc = generateQRCode.QREncode(300, 300,
                     "http://192.168.1.112:8000/verifygid/" + gid);
-            ByteArrayOutputStream myOutputStream = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage, "jpeg", myOutputStream);
-            return myOutputStream.toByteArray();
+            return imgSrc;
         } catch (Exception e) {
             log.error("gen failed" + e.getLocalizedMessage());
             return null;
         }
     }
 
-    @GetMapping(value = "/qr2/{gid}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/qr2/{gid}")
     @ResponseBody
-    public byte[] getQRCode2(@PathVariable(required = true) String gid) {
+    public String getQRCode2(@PathVariable(required = true) String gid) {
         GenerateQRCode generateQRCode = new GenerateQRCode();
         try {
-            BufferedImage bufferedImage = generateQRCode.QREncode(300, 300,
-                    "demo text: http://192.168.1.112:8000/verifygid/" + gid);
-            ByteArrayOutputStream myOutputStream = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage, "jpeg", myOutputStream);
-            return myOutputStream.toByteArray();
+            String imgSrc = generateQRCode.QREncode(300, 300,
+                    "demo texthttp://192.168.1.112:8000/verifygid/" + gid);
+            return imgSrc;
         } catch (Exception e) {
             log.error("gen failed" + e.getLocalizedMessage());
             return null;
         }
+    }
+
+    @GetMapping("/demo")
+    public String demo(Model model) {
+        model.addAttribute("name", "world");
+
+        return "template/demo";
     }
 
 }

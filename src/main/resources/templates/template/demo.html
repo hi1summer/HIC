@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+        	$("#genbutton").on("click",function(){
+        		var link = "/qr/"+$("#gid").val();
+                $.get(link,function(content){
+                	$("#content").attr("src", content+"?"+new Date().getTime());
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    GID:
+    <input id="gid" type="text" name="GID">
+    <input id="genbutton" type="button" value="GENERATE">
+    <p />
+    <img id="content"></img>
+</body>
+</html>
