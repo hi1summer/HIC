@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <title>addproductinfo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        table tr td {
+            border:1px solid #0094ff;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script>
+    function allhide(){
+    	$("#producer").hide();
+    	$("#express").hide();
+    	$("#transaction").hide();
+    }
+    $(document).ready(function(){
+    	allhide();
+    	$("#select").change(function(){
+    		allhide();
+    		if ($(this).val()==1){
+    			$("#producer").show();
+    		}
+    		if ($(this).val()==2){
+    			$("#express").show();
+    		}
+    		if ($(this).val()==3){
+    			$("#transaction").show();
+            }
+    	});
+    });
+    </script>
+  </head>
+
+  <body>
+	<form th:action="@{/addproductinfo}" th:object="${productinfo}" method="post">
+	   <p>gid：</p>
+       <input type="text" id="product.gid" name="product.gid" th:value="*{product.gid}" />
+	   <p>创建时间：</p>
+	   <input type="text" id="createTime" name="createTime" th:value="*{createTime}" />
+	   <p>更新时间：</p>
+	   <input type="text" id="updateTime" name="updateTime" th:value="*{updateTime}" />
+       <p>信息类型：</p>
+       <select id="select" th:field="*{infoType}">
+       <option th:each="type : ${infoTypes}" 
+               th:value="${type.getTypeIndex()}" 
+               th:text="${type.getTypeName()}"></option>
+       </select>
+       <div id="express">
+       <p>快递描述：</p>
+       <input type="text" id="expressDesc" name="expressDesc" th:value="*{expressDesc}" />
+       <p>快递名称：</p>
+       <input type="text" id="expressName" name="expressName" th:value="*{expressName}" />
+       <p>快递ID：</p>
+       <input type="text" id="expressid" name="expressid" th:value="*{expressid}" />
+       </div>
+       <div id="producer">
+       <p>生产者描述：</p>
+       <input type="text" id="producerDesc" name="producerDesc" th:value="*{producerDesc}" />
+       <p>生产者名称：</p>
+       <input type="text" id="producerName" name="producerName" th:value="*{producerName}" />
+       <p>生产者ID：</p>
+       <input type="text" id="producerid" name="producerid" th:value="*{producerid}" />
+       </div>
+       <div id="transaction">
+       <p>交易描述：</p>
+       <input type="text" id="transactionDesc" name="transactionDesc" th:value="*{transactionDesc}" />
+       <p>交易名称：</p>
+       <input type="text" id="transactionName" name="transactionName" th:value="*{transactionName}" />
+       <p>交易ID：</p>
+       <input type="text" id="transactionid" name="transactionid" th:value="*{transactionid}" />
+       </div>
+       <p>内容：</p>
+       <input type="text" id="content" name="content" th:value="*{content}" />
+       <p>请确认，添加不能删除不能修改</p>
+       <button name="submit" type="submit">确认</button>
+	</form>
+
+  </body>
+
+</html>

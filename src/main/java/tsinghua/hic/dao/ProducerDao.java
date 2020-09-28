@@ -3,7 +3,7 @@
  */
 package tsinghua.hic.dao;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import tsinghua.hic.pojo.po.Producer;
 
@@ -13,6 +13,7 @@ import tsinghua.hic.pojo.po.Producer;
  * @Date 2020年8月31日
  * @Desc
  */
-public interface ProducerDao extends CrudRepository<Producer, String> {
+public interface ProducerDao
+        extends PagingAndSortingRepository<Producer, String> {
 
 }

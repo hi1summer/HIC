@@ -3,7 +3,7 @@
  */
 package tsinghua.hic.dao;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import tsinghua.hic.pojo.po.Transaction;
 
@@ -13,6 +13,7 @@ import tsinghua.hic.pojo.po.Transaction;
  * @Date 2020年8月31日
  * @Desc
  */
-public interface TransactionDao extends CrudRepository<Transaction, String> {
+public interface TransactionDao
+        extends PagingAndSortingRepository<Transaction, String> {
 
 }

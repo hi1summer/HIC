@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <title>list</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        table tr td {
+            border:1px solid #0094ff;
+        }
+    </style>
+  </head>
+
+  <body>
+<div class="seedstarterlist" th:unless="${#lists.isEmpty(list)}">
+    
+  <h2><a href="/list">List of ProductInfos</a></h2>
+  
+  <table>
+      <tr>
+        <td><a href="/addproduct">新增</a></td>
+      </tr>
+      <tr th:each="row : ${list}">
+        <td><a th:href="@{'/get/'+${row.gid}}" th:text="${row.gid}"></a></td>
+        <td th:text="${row.createTime}"></td>
+        <td th:text="${row.updateTime}"></td>
+        <td th:text="${row.productName}"></td>
+        <td th:text="${row.productDesc}"></td>
+        <td>
+           <div><a th:href="@{'/addproductinfo/'+${row.gid}}" th:text="新增"></a></div>
+           <div th:each="row2: ${row.productinfos}">
+            <table>
+                <tr>
+                    <td th:text="${row2.productinfoid}"></td>
+                    <td th:text="${row2.content}"></td>
+                    <td th:text="${row2.createTime}"></td>
+                    <td th:text="${row2.expressDesc}"></td>
+                    <td th:text="${row2.expressName}"></td>
+                    <td th:text="${row2.expressid}"></td>
+                    <td th:text="${row2.infoType}"></td>
+                    <td th:text="${row2.producerDesc}"></td>
+                    <td th:text="${row2.producerName}"></td>
+                    <td th:text="${row2.producerid}"></td>
+                    <td th:text="${row2.transactionDesc}"></td>
+                    <td th:text="${row2.transactionName}"></td>
+                    <td th:text="${row2.transactionid}"></td>
+                    <td th:text="${row2.updateTime}"></td>
+                </tr>
+            </table>
+           </div>
+        </td>
+      </tr>
+  </table>
+</div>
+  </body>
+
+</html>
