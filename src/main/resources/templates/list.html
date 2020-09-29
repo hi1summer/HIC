@@ -6,7 +6,7 @@
     <title>list</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <style>
-        table tr td {
+        table tr td, table tr th {
             border:1px solid #0094ff;
         }
     </style>
@@ -22,9 +22,15 @@
         <td><a href="/addproduct">新增</a></td>
       </tr>
       <tr>
-        <td th:if="${row.producthash eq null}"><a th:href="@{'/test2/'+${row.gid}}">重新生成hash</a></td>
-        <td th:if="${row.producthash ne null}" th:text="${row.producthash.hash}"></td>
+        <th>ID</th>
+        <th>创建日期</th>
+        <th>更新日期</th>
+        <th>产品名称</th>
+        <th>产品描述</th>
+        <th>产品信息</th>
+        <th>HASH</th>
       </tr>
+
       <tr th:each="row : ${list}">
         <td><a th:href="@{'/get/'+${row.gid}}" th:text="${row.gid}"></a></td>
         <td th:text="${row.createTime}"></td>
@@ -33,9 +39,25 @@
         <td th:text="${row.productDesc}"></td>
         <td>
            <div><a th:href="@{'/addproductinfo/'+${row.gid}}" th:text="新增"></a></div>
-           <div th:each="row2: ${row.productinfos}">
+           <div>
             <table>
                 <tr>
+                    <th>ID</th>
+                    <th>内容</th>
+                    <th>创建时间</th>
+                    <th>快递描述</th>
+                    <th>快递名称</th>
+                    <th>快递ID</th>
+                    <th>信息类型</th>
+                    <th>生产者描述</th>
+                    <th>生产者名称</th>
+                    <th>生产者ID</th>
+                    <th>交易描述</th>
+                    <th>交易名称</th>
+                    <th>交易ID</th>
+                    <th>更新时间</th>
+                </tr>
+                <tr th:each="row2: ${row.productinfos}">
                     <td th:text="${row2.productinfoid}"></td>
                     <td th:text="${row2.content}"></td>
                     <td th:text="${row2.createTime}"></td>
@@ -54,6 +76,8 @@
             </table>
            </div>
         </td>
+        <td th:if="${row.producthash ne null}" th:text="${row.producthash.hash}"></td>
+        <td><a th:href="@{'/generate/'+${row.gid}}">重新生成hash</a></td>
       </tr>
   </table>
 </div>
