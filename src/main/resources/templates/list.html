@@ -22,7 +22,8 @@
         <td><a href="/addproduct">新增</a></td>
       </tr>
       <tr>
-        <td th:text="${row.producthash.hash}"></td>
+        <td th:if="${row.producthash eq null}"><a th:href="@{'/test2/'+${row.gid}}">重新生成hash</a></td>
+        <td th:if="${row.producthash ne null}" th:text="${row.producthash.hash}"></td>
       </tr>
       <tr th:each="row : ${list}">
         <td><a th:href="@{'/get/'+${row.gid}}" th:text="${row.gid}"></a></td>

@@ -103,7 +103,17 @@ public class ProductController {
             log.error(e.getLocalizedMessage());
         }
         return new ModelAndView(
-                "redirect:/get/" + productinfo.getProduct().getGid());
+                "redirect:/get" + productinfo.getProduct().getGid());
+    }
+
+    @GetMapping("/generate/{gid}")
+    public ModelAndView generate(@PathVariable String gid) {
+        try {
+            hashGenerateService.generate(gid);
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+        }
+        return new ModelAndView("redirect:/list");
     }
 
 }
