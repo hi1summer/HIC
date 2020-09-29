@@ -19,7 +19,7 @@
   
   <table>
       <tr>
-        <td><a href="/addproduct">新增</a></td>
+        <td><a href="/addproduct">新增产品</a></td>
       </tr>
       <tr>
         <th>ID</th>
@@ -38,7 +38,7 @@
         <td th:text="${row.productName}"></td>
         <td th:text="${row.productDesc}"></td>
         <td>
-           <div><a th:href="@{'/addproductinfo/'+${row.gid}}" th:text="新增"></a></div>
+           <div><a th:href="@{'/addproductinfo/'+${row.gid}}" th:text="补充产品信息"></a></div>
            <div>
             <table>
                 <tr>
