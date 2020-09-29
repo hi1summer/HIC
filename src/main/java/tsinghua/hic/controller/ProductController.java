@@ -19,6 +19,7 @@ import net.bytebuddy.asm.Advice.This;
 import tsinghua.hic.pojo.dto.InfoTypeEnum;
 import tsinghua.hic.pojo.po.Product;
 import tsinghua.hic.pojo.po.Productinfo;
+import tsinghua.hic.service.HashGenerateService;
 import tsinghua.hic.service.ProductService;
 
 @RestController
@@ -27,6 +28,8 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private HashGenerateService hashGenerateService;
 
     @ModelAttribute("infoTypes")
     public List<InfoTypeEnum> populateTypes() {
@@ -67,6 +70,11 @@ public class ProductController {
     @PostMapping("/addproduct")
     public ModelAndView addproductpost(ModelMap model, Product product) {
         product = productService.add(product);
+        try {
+            hashGenerateService.generate(product.getGid());
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+        }
         List<Product> productList = Arrays.asList(product);
         model.addAttribute("list", productList);
         return new ModelAndView("list", model);
@@ -89,6 +97,11 @@ public class ProductController {
     @PostMapping("/addproductinfo")
     public ModelAndView addproductinfopost(Productinfo productinfo) {
         productinfo = productService.add(productinfo);
+        try {
+            hashGenerateService.generate(productinfo.getProduct().getGid());
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage());
+        }
         return new ModelAndView(
                 "redirect:/get/" + productinfo.getProduct().getGid());
     }
