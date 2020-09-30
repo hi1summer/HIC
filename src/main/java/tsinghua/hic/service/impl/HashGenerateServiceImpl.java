@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javassist.NotFoundException;
 import tsinghua.hic.commons.EncryptWithSHA256;
+import tsinghua.hic.commons.dynamicdatasource.DSType;
 import tsinghua.hic.dao.ProductDao;
 import tsinghua.hic.dao.ProducthashDao;
 import tsinghua.hic.pojo.po.Product;
@@ -31,6 +32,7 @@ public class HashGenerateServiceImpl implements HashGenerateService {
     private ProducthashDao producthashDao;
 
     @Override
+    @DSType(isMaster = true)
     public void generate(String gid) throws NotFoundException,
             JsonProcessingException, NoSuchAlgorithmException {
         StringBuilder contentString = new StringBuilder();

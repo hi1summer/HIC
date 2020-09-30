@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tsinghua.hic.commons.dynamicdatasource.DSType;
 import tsinghua.hic.dao.ProductDao;
 import tsinghua.hic.dao.ProductinfoDao;
 import tsinghua.hic.pojo.po.Product;
@@ -19,22 +20,26 @@ public class ProductServiceImpl implements ProductService {
     private ProductinfoDao ProductinfoDao;
 
     @Override
+    @DSType(isMaster = false)
     public Iterable<Product> findall() {
         return productDao.findAll();
     }
 
     @Override
+    @DSType(isMaster = false)
     public Optional<Product> get(String gid) {
         return productDao.findById(gid);
     }
 
     @Override
+    @DSType(isMaster = true)
     public Product add(Product product) {
         productDao.save(product);
         return product;
     }
 
     @Override
+    @DSType(isMaster = true)
     public Productinfo add(Productinfo productinfo) {
         ProductinfoDao.save(productinfo);
         return productinfo;
