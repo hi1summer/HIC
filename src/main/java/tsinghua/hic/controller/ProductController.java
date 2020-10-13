@@ -130,4 +130,8 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/demo")
+    public ModelAndView demo() {
+        return new ModelAndView("demo");
+    }
 }

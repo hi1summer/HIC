@@ -2,9 +2,9 @@
 
 <html>
 
-<head>
-  <title>list</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <head>
+    <title>demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <style>
       table tr td, table tr th {
           border:1px solid #0094ff;
@@ -34,11 +34,11 @@
       }
       ul{
         list-style-type:none;
-		margin:0;
-		padding: 10px;
-		font-weight:bold;
+        margin:0;
+        padding: 10px;
+        font-weight:bold;
         color:#FFFFFF;
-		background-color:#bebebe;
+        background-color:#bebebe;
       }
       ul li ul li{
         padding:20px;
@@ -47,10 +47,21 @@
       background-color:#cc0000;
       }
   </style>
-</head>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#genbutton").on("click",function(){
+                var link = "/qr/"+$("#gid").val();
+                $.get(link,function(content){
+                    $("#content").attr("src", content+"?"+new Date().getTime());
+                });
+            });
+        });
+    </script>
+  </head>
 
-<body>
-<div class="head"><div>复合标识区块链保护系统</div></div>
+  <body>
+  <div class="head"><div>复合标识区块链保护系统</div></div>
 <div class="nav">
 <ul>
     <li>
@@ -68,28 +79,14 @@
     </li>
 </ul>
 </div>
-<div class="content" th:unless="${#lists.isEmpty(list)}">
-  <h2><a>产品列表</a></h2>
-  
-  <table>
-      <tr>
-        <th>创建日期</th>
-        <th>更新日期</th>
-        <th>产品名称</th>
-        <th>产品描述</th>
-        <th>HASH</th>
-      </tr>
-
-      <tr th:each="row : ${list}">
-        <td th:text="${row.createTime}"></td>
-        <td th:text="${row.updateTime}"></td>
-        <td><a th:href="@{'/get/'+${row.gid}}" th:text="${row.productName}"></a></td>
-        <td th:text="${row.productDesc}"></td>
-        <td th:if="${row.producthash ne null}" th:text="${row.producthash.hash}"></td>
-        <td th:if="${row.producthash eq null}"><a th:href="@{'/generate/'+${row.gid}}">重新生成hash</a></td>
-      </tr>
-  </table>
+<div class="content">
+    <h2><a>demo</a></h2>
+    GID: <input id="gid" type="text" name="GID">
+    <input id="genbutton" type="button" value="GENERATE">
+    <p />
+    <img id="content"></img>
 </div>
-</body>
+
+  </body>
 
 </html>
