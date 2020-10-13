@@ -1,5 +1,6 @@
 package tsinghua.hic.controller;
 
+import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import net.bytebuddy.asm.Advice.This;
+import tsinghua.hic.commons.GenerateQRCode;
 import tsinghua.hic.pojo.dto.InfoTypeEnum;
 import tsinghua.hic.pojo.po.Product;
 import tsinghua.hic.pojo.po.Productinfo;
@@ -110,6 +113,21 @@ public class ProductController {
             log.error(e.getLocalizedMessage());
         }
         return new ModelAndView("redirect:/list");
+    }
+
+    @GetMapping(value = "/qr/{gid}")
+    @ResponseBody
+    public String getQRCode(@PathVariable(required = true) String gid) {
+        GenerateQRCode generateQRCode = new GenerateQRCode();
+        try {
+            String imgSrc = generateQRCode.QREncode(300, 300,
+                    "http://" + InetAddress.getLocalHost().getHostAddress()
+                            + ":7777/verifygid/" + gid);
+            return imgSrc;
+        } catch (Exception e) {
+            log.error("gen failed" + e.getLocalizedMessage());
+            return null;
+        }
     }
 
 }
