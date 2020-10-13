@@ -46,14 +46,12 @@ public class ProductController {
     @GetMapping("/get/{gid}")
     public ModelAndView get(ModelMap model, @PathVariable String gid) {
         try {
-
-            List<Product> productList = Arrays
-                    .asList(productService.get(gid).get());
-            model.addAttribute("list", productList);
-            return new ModelAndView("list", model);
+            Product product = productService.get(gid).get();
+            model.addAttribute("product", product);
+            return new ModelAndView("listproductinfo", model);
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
-            return new ModelAndView("list", model);
+            return new ModelAndView("listproductinfo", model);
         }
     }
 
@@ -75,9 +73,7 @@ public class ProductController {
         } catch (Exception e) {
             log.error(e.getLocalizedMessage());
         }
-        List<Product> productList = Arrays.asList(product);
-        model.addAttribute("list", productList);
-        return new ModelAndView("list", model);
+        return new ModelAndView("redirect:/list");
     }
 
     @GetMapping("/addproductinfo/{gid}")
@@ -103,7 +99,7 @@ public class ProductController {
             log.error(e.getLocalizedMessage());
         }
         return new ModelAndView(
-                "redirect:/get" + productinfo.getProduct().getGid());
+                "redirect:/get/" + productinfo.getProduct().getGid());
     }
 
     @GetMapping("/generate/{gid}")
