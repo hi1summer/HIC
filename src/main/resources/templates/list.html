@@ -6,9 +6,36 @@
   <title>list</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <style>
-      table tr td, table tr th {
-          border:1px solid #0094ff;
-      }
+  input{
+      font-family: verdana,arial,sans-serif;
+    font-size:20px;
+    color:#333333;
+  
+  }
+table {
+    font-family: verdana,arial,sans-serif;
+    font-size:22px;
+    color:#333333;
+    border-width: 1px;
+    border-color: #999999;
+    border-collapse: collapse;
+}
+table th {
+    background-color:#c3dde0;
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #a9c6c9;
+}
+table tr {
+    background-color:#d4e3e5;
+}
+table td {
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #a9c6c9;
+}
       .head {
         width:100%;
         height:100px;
@@ -87,6 +114,26 @@
         <td th:text="${row.productDesc}"></td>
         <td th:if="${row.producthash ne null}" th:text="${row.producthash.hash}"></td>
         <td th:if="${row.producthash eq null}"><a th:href="@{'/generate/'+${row.gid}}">重新生成hash</a></td>
+      </tr>
+      <tr>
+    <form th:action="@{/addproduct}" th:object="${product}" method="post">
+       <td>
+       <input type="text" id="createTime" name="createTime" th:value="*{createTime}" />
+       </td>
+       <td>
+       <input type="text" id="updateTime" name="updateTime" th:value="*{updateTime}" />
+       </td>
+       <td>
+       <input type="text" id="productName" name="productName" th:value="*{productName}" />
+       </td>
+       <td>
+       <input type="text" id="productDesc" name="productDesc" th:value="*{productDesc}" />
+       </td>
+       <td>
+                    添加后不能删除不能修改
+       <input name="submit" type="submit" value="确认" onclick="if (!confirm('添加后不能删除不能修改')){return false;}"></input>
+       </td>
+    </form>
       </tr>
   </table>
 </div>

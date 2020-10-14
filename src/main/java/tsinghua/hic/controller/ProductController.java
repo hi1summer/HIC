@@ -43,6 +43,11 @@ public class ProductController {
     public ModelAndView list(ModelMap model) {
         Iterable<Product> productList = productService.findall();
         model.addAttribute("list", productList);
+        Product product = new Product();
+        Date now = new Date();
+        product.setCreateTime(now);
+        product.setUpdateTime(now);
+        model.addAttribute("product", product);
         return new ModelAndView("list", model);
     }
 
