@@ -8,7 +8,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 @SpringCloudApplication
 public class Application {
     public static void main(String[] args) {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
         SpringApplication.run(Application.class, args);
     }
 

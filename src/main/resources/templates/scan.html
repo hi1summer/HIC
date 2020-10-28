@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>scan</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <style>
+  div{
+  font-family: verdana,arial,sans-serif;
+    font-size:50px;
+    color:#333333;
+  }
+  a{
+      font-family: verdana,arial,sans-serif;
+    font-size:100px;
+    color:#333333;
+  }
+  a:hover{
+    background-color:#d0e4fe;
+  }
+      .head {
+        width:100%;
+        height:100px;
+        background-color:#d0e4fe;
+        text-align: center;
+      }
+      .head div{
+        padding-top:20px;
+        font-size:40px;
+      }
+  </style>
+</head>
+
+<body>
+<div class="head"><div>HIC区块链溯源防伪系统</div></div>
+<div class="content">
+根据登录名密码，判断角色权限，进入不同界面
+由于不好演示，所以这里直接列出选择
+<hr />
+<a th:href="@{'/producer/'+${gid}}">我是生产商</a>
+<hr />
+<a th:href="@{'/express/'+${gid}}">我是快递商</a>
+<hr />
+<a th:href="@{'/transaction/'+${gid}}">我是交易商</a>
+<hr />
+<a th:href="@{'/verifyuser/'+${gid}}">我是买到产品的用户</a>
+<hr />
+</div>
+</body>
+
+</html>

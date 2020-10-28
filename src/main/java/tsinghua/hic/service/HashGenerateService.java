@@ -7,6 +7,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import javassist.NotFoundException;
 
 public interface HashGenerateService {
-    void generate(String gid) throws NotFoundException, JsonProcessingException,
-            NoSuchAlgorithmException;
+    void generate(String productinfoid) throws NotFoundException,
+            JsonProcessingException, NoSuchAlgorithmException;
 }

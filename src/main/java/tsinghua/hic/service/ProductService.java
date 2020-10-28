@@ -1,9 +1,11 @@
 package tsinghua.hic.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import tsinghua.hic.pojo.po.Product;
 import tsinghua.hic.pojo.po.Productinfo;
+import tsinghua.hic.pojo.po.Productinfohash;
 
 /**
  * @author summer
@@ -19,4 +21,8 @@ public interface ProductService {
     Product add(Product product);
 
     Productinfo add(Productinfo productinfo);
+
+    List<Productinfo> findProductinfoByGid(String gid);
+
+    Optional<Productinfohash> gethash(String productinfoid);
 }

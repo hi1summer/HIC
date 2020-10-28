@@ -1,23 +1,15 @@
 package tsinghua.hic.pojo.po;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -29,20 +21,20 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @NamedQuery(name = "Productinfo.findAll", query = "SELECT p FROM Productinfo p")
 public class Productinfo implements Serializable {
 
-    private static final long serialVersionUID = -5718510996893076068L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 4953903797728213645L;
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
     private String productinfoid;
 
-    @Lob
     private String content;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "create_time")
-    @JsonIgnore
-    private Date createTime;
+    private String createTime;
 
     @Column(name = "express_desc")
     private String expressDesc;
@@ -50,10 +42,14 @@ public class Productinfo implements Serializable {
     @Column(name = "express_name")
     private String expressName;
 
-    private String expressid;
+    @Column(name = "gid")
+    private String gid;
 
+    // 1 producer 2 express 3 transaction 4 verifyuser
     @Column(name = "info_type")
     private short infoType;
+
+    private String loc;
 
     @Column(name = "producer_desc")
     private String producerDesc;
@@ -61,26 +57,20 @@ public class Productinfo implements Serializable {
     @Column(name = "producer_name")
     private String producerName;
 
-    private String producerid;
-
     @Column(name = "transaction_desc")
     private String transactionDesc;
 
     @Column(name = "transaction_name")
     private String transactionName;
 
-    private String transactionid;
-
-    @Temporal(TemporalType.DATE)
     @Column(name = "update_time")
-    @JsonIgnore
-    private Date updateTime;
+    private String updateTime;
 
-    // bi-directional many-to-one association to Product
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "gid")
-    @JsonIgnore
-    private Product product;
+    @Column(name = "verifyuser_desc")
+    private String verifyuserDesc;
+
+    @Column(name = "verifyuser_name")
+    private String verifyuserName;
 
     public Productinfo() {
     }
@@ -101,11 +91,11 @@ public class Productinfo implements Serializable {
         this.content = content;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -125,12 +115,12 @@ public class Productinfo implements Serializable {
         this.expressName = expressName;
     }
 
-    public String getExpressid() {
-        return expressid;
+    public String getGid() {
+        return gid;
     }
 
-    public void setExpressid(String expressid) {
-        this.expressid = expressid;
+    public void setGid(String gid) {
+        this.gid = gid;
     }
 
     public short getInfoType() {
@@ -139,6 +129,14 @@ public class Productinfo implements Serializable {
 
     public void setInfoType(short infoType) {
         this.infoType = infoType;
+    }
+
+    public String getLoc() {
+        return loc;
+    }
+
+    public void setLoc(String loc) {
+        this.loc = loc;
     }
 
     public String getProducerDesc() {
@@ -157,14 +155,6 @@ public class Productinfo implements Serializable {
         this.producerName = producerName;
     }
 
-    public String getProducerid() {
-        return producerid;
-    }
-
-    public void setProducerid(String producerid) {
-        this.producerid = producerid;
-    }
-
     public String getTransactionDesc() {
         return transactionDesc;
     }
@@ -181,28 +171,28 @@ public class Productinfo implements Serializable {
         this.transactionName = transactionName;
     }
 
-    public String getTransactionid() {
-        return transactionid;
-    }
-
-    public void setTransactionid(String transactionid) {
-        this.transactionid = transactionid;
-    }
-
-    public Date getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
 
-    public Product getProduct() {
-        return product;
+    public String getVerifyuserDesc() {
+        return verifyuserDesc;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setVerifyuserDesc(String verifyuserDesc) {
+        this.verifyuserDesc = verifyuserDesc;
+    }
+
+    public String getVerifyuserName() {
+        return verifyuserName;
+    }
+
+    public void setVerifyuserName(String verifyuserName) {
+        this.verifyuserName = verifyuserName;
     }
 
 }

@@ -2,16 +2,40 @@
 
 <html>
 
-  <head>
-    <title>addproductinfo</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style>
-        .hide{
-            display: none;
-        }
-      table tr td, table tr th {
-          border:1px solid #0094ff;
-      }
+<head>
+  <title>addproductinfo</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <style>
+  input, button, select, textarea{
+      font-family: verdana,arial,sans-serif;
+    font-size:25px;
+    color:#333333;
+  
+  }
+table {
+    font-family: verdana,arial,sans-serif;
+    font-size:22px;
+    color:#333333;
+    border-width: 1px;
+    border-color: #999999;
+    border-collapse: collapse;
+}
+table th {
+    background-color:#c3dde0;
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #a9c6c9;
+}
+table tr {
+    background-color:#d4e3e5;
+}
+table td {
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #a9c6c9;
+}
       .head {
         width:100%;
         height:100px;
@@ -19,10 +43,13 @@
         text-align: center;
       }
       .head div{
+    font-family: verdana,arial,sans-serif;
+    color:#333333;
         padding-top:20px;
         font-size:40px;
       }
       .nav{
+        font-size:20px;
         position: absolute;
         top: 110px;
         left: 0;
@@ -32,16 +59,16 @@
       .content{
         position: absolute;
         top:110px;
-        left: 20%;
+        left: 10%;
         width: 80%;
       }
       ul{
         list-style-type:none;
-        margin:0;
-        padding: 10px;
-        font-weight:bold;
+		margin:0;
+		padding: 10px;
+		font-weight:bold;
         color:#FFFFFF;
-        background-color:#bebebe;
+		background-color:#bebebe;
       }
       ul li ul li{
         padding:20px;
@@ -49,96 +76,60 @@
       ul li ul li a:hover,ul li ul li a:active{
       background-color:#cc0000;
       }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-    <script>
-    function allhide(){
-    	$("#producer").hide();
-    	$("#express").hide();
-    	$("#transaction").hide();
-    }
-    $(document).ready(function(){
-    	allhide();
-    	$("#select").change(function(){
-    		allhide();
-    		if ($(this).val()==1){
-    			$("#producer").show();
-    		}
-    		if ($(this).val()==2){
-    			$("#express").show();
-    		}
-    		if ($(this).val()==3){
-    			$("#transaction").show();
-            }
-    	});
-    });
-    </script>
-  </head>
+      .hide{
+      display:none
+      }
+  </style>
+</head>
 
-  <body>
-<div class="head"><div>复合标识区块链保护系统</div></div>
-<div class="nav">
-<ul>
-    <li>
-        产品数据维护
-        <ul>
-            <li><a href="/list">产品列表</a></li>
-            <li><a href="/addproduct">新增产品</a></li>
-        </ul>
-    </li>
-    <li>
-            产品数据验证
-            <ul>
-                <li><a href="/demo">验证</a></li>
-            </ul>
-    </li>
-</ul>
-</div>
+<body>
+<div class="head"><div>HIC区块链溯源防伪系统</div></div>
 <div class="content">
-	<form th:action="@{/addproductinfo}" th:object="${productinfo}" method="post">
-	   <p class="hide">gid：</p>
-       <input class="hide" type="text" id="product.gid" name="product.gid" th:value="*{product.gid}" />
-	   <p>创建时间：</p>
-	   <input type="text" id="createTime" name="createTime" th:value="*{createTime}" />
-	   <p>更新时间：</p>
-	   <input type="text" id="updateTime" name="updateTime" th:value="*{updateTime}" />
+  <h2><a>添加产品信息</a></h2>
+  <hr />
+    <form th:action="@{/addproductinfo}" th:object="${productinfo}" method="post">
+       <p class="hide">gid：</p>
+       <input class="hide" type="text" id="gid" name="gid" th:value="*{gid}" />
+       <p>创建时间：</p>
+       <input type="text" id="createTime" name="createTime" th:value="*{createTime}" />
+       <p>更新时间：</p>
+       <input type="text" id="updateTime" name="updateTime" th:value="*{updateTime}" />
+       <p>位置：</p>
+       <input type="text" id="loc" name="loc" th:value="*{loc}" />
        <p>信息类型：</p>
        <select id="select" th:field="*{infoType}">
        <option th:each="type : ${infoTypes}" 
                th:value="${type.getTypeIndex()}" 
                th:text="${type.getTypeName()}"></option>
        </select>
-       <div id="express">
-       <p>快递描述：</p>
-       <input type="text" id="expressDesc" name="expressDesc" th:value="*{expressDesc}" />
-       <p>快递名称：</p>
-       <input type="text" id="expressName" name="expressName" th:value="*{expressName}" />
-       <p>快递ID：</p>
-       <input type="text" id="expressid" name="expressid" th:value="*{expressid}" />
-       </div>
-       <div id="producer">
+       <div id="producer" th:if="${productinfo.infoType eq 1}">
        <p>生产者描述：</p>
        <input type="text" id="producerDesc" name="producerDesc" th:value="*{producerDesc}" />
        <p>生产者名称：</p>
        <input type="text" id="producerName" name="producerName" th:value="*{producerName}" />
-       <p>生产者ID：</p>
-       <input type="text" id="producerid" name="producerid" th:value="*{producerid}" />
        </div>
-       <div id="transaction">
+       <div id="express" th:if="${productinfo.infoType eq 2}">
+       <p>快递描述：</p>
+       <input type="text" id="expressDesc" name="expressDesc" th:value="*{expressDesc}" />
+       <p>快递名称：</p>
+       <input type="text" id="expressName" name="expressName" th:value="*{expressName}" />
+       </div>
+       <div id="transaction" th:if="${productinfo.infoType eq 3}">
        <p>交易描述：</p>
        <input type="text" id="transactionDesc" name="transactionDesc" th:value="*{transactionDesc}" />
        <p>交易名称：</p>
        <input type="text" id="transactionName" name="transactionName" th:value="*{transactionName}" />
-       <p>交易ID：</p>
-       <input type="text" id="transactionid" name="transactionid" th:value="*{transactionid}" />
        </div>
        <p>内容：</p>
-       <input type="text" id="content" name="content" th:value="*{content}" style="height:200px; width:500px" />
+       <textarea id="content" name="content" th:value="*{content}" style="height:200px; width:500px">
+       </textarea>
        <p>请确认，添加不能删除不能修改</p>
        <button name="submit" type="submit">确认</button>
-       <a th:href="@{'/get/'+${productinfo.product.gid}}" th:text="返回"></a>
-	</form>
+       <hr />
+       <br /><br /><br />
+    </form>
+
 </div>
-  </body>
+</body>
 
 </html>

@@ -16,10 +16,11 @@ import javassist.NotFoundException;
 import tsinghua.hic.commons.EncryptWithSHA256;
 import tsinghua.hic.commons.dynamicdatasource.DSType;
 import tsinghua.hic.dao.ProductDao;
-import tsinghua.hic.dao.ProducthashDao;
+import tsinghua.hic.dao.ProductinfoDao;
+import tsinghua.hic.dao.ProductinfohashDao;
 import tsinghua.hic.pojo.po.Product;
-import tsinghua.hic.pojo.po.Producthash;
 import tsinghua.hic.pojo.po.Productinfo;
+import tsinghua.hic.pojo.po.Productinfohash;
 import tsinghua.hic.service.HashGenerateService;
 
 @Service
@@ -29,32 +30,36 @@ public class HashGenerateServiceImpl implements HashGenerateService {
     @Autowired
     private ProductDao productDao;
     @Autowired
-    private ProducthashDao producthashDao;
+    private ProductinfoDao productinfoDao;
+    @Autowired
+    private ProductinfohashDao productinfohashDao;
 
     @Override
     @DSType(isMaster = true)
-    public void generate(String gid) throws NotFoundException,
+    public void generate(String productinfoid) throws NotFoundException,
             JsonProcessingException, NoSuchAlgorithmException {
-        StringBuilder contentString = new StringBuilder();
-        Optional<Product> productOptional = productDao.findById(gid);
-        if (!productOptional.isPresent()) {
-            throw new NotFoundException("gid not found");
+        Optional<Productinfo> productinfoOptional = productinfoDao
+                .findById(productinfoid);
+        if (!productinfoOptional.isPresent()) {
+            throw new NotFoundException("productinfoid not found");
         } else {
-            Product product = productOptional.get();
-            List<Productinfo> productinfos = product.getProductinfos();
+            Productinfo productinfo = productinfoOptional.get();
+            Product product = productDao.findById(productinfo.getGid()).get();
+            List<Productinfo> productinfos = productinfoDao
+                    .findByGid(productinfo.getGid());
             ObjectMapper mapper = new ObjectMapper();
-            contentString.append(mapper.writeValueAsString(product));
-            contentString.append(mapper.writeValueAsString(productinfos));
-
             EncryptWithSHA256 encryptWithSHA256 = new EncryptWithSHA256();
-            String digestString = encryptWithSHA256
-                    .encrypt(contentString.toString());
+            String productinfosString = mapper.writeValueAsString(productinfos);
+            String productString = mapper.writeValueAsString(product);
+            String digestString = encryptWithSHA256.encrypt(productinfosString);
             String seconddigestString = encryptWithSHA256
-                    .encrypt(gid + digestString);
-            Producthash producthash = new Producthash();
-            producthash.setGid(gid);
-            producthash.setHash(seconddigestString);
-            producthashDao.save(producthash);
+                    .encrypt(productString + digestString);
+            Productinfohash productinfohash = new Productinfohash();
+            productinfohash.setProductinfoid(productinfoid);
+            productinfohash.setHash(seconddigestString);
+            productinfohashDao.save(productinfohash);
+            logger.info("hash(" + productString + "+hash(" + productinfosString
+                    + ")" + ")");
             logger.info(seconddigestString);
         }
     }

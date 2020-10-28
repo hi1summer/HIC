@@ -1,23 +1,15 @@
 package tsinghua.hic.pojo.po;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -29,17 +21,20 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
 public class Product implements Serializable {
 
-    private static final long serialVersionUID = 8319595579676546991L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -9073212488292293621L;
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
     private String gid;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "create_time")
-    @JsonIgnore
-    private Date createTime;
+    private String createTime;
+
+    private String picurl;
 
     @Column(name = "product_desc")
     private String productDesc;
@@ -47,20 +42,8 @@ public class Product implements Serializable {
     @Column(name = "product_name")
     private String productName;
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "update_time")
-    @JsonIgnore
-    private Date updateTime;
-
-    // bi-directional one-to-one association to Producthash
-    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Producthash producthash;
-
-    // bi-directional many-to-one association to Productinfo
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
-    @JsonIgnore
-    private List<Productinfo> productinfos;
+    private String updateTime;
 
     public Product() {
     }
@@ -73,12 +56,20 @@ public class Product implements Serializable {
         this.gid = gid;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public String getPicurl() {
+        return picurl;
+    }
+
+    public void setPicurl(String picurl) {
+        this.picurl = picurl;
     }
 
     public String getProductDesc() {
@@ -97,42 +88,12 @@ public class Product implements Serializable {
         this.productName = productName;
     }
 
-    public Date getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public Producthash getProducthash() {
-        return producthash;
-    }
-
-    public void setProducthash(Producthash producthash) {
-        this.producthash = producthash;
-    }
-
-    public List<Productinfo> getProductinfos() {
-        return productinfos;
-    }
-
-    public void setProductinfos(List<Productinfo> productinfos) {
-        this.productinfos = productinfos;
-    }
-
-    public Productinfo addProductinfo(Productinfo productinfo) {
-        getProductinfos().add(productinfo);
-        productinfo.setProduct(this);
-
-        return productinfo;
-    }
-
-    public Productinfo removeProductinfo(Productinfo productinfo) {
-        getProductinfos().remove(productinfo);
-        productinfo.setProduct(null);
-
-        return productinfo;
     }
 
 }

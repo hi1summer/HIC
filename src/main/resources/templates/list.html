@@ -8,7 +8,7 @@
   <style>
   input{
       font-family: verdana,arial,sans-serif;
-    font-size:20px;
+    font-size:16px;
     color:#333333;
   
   }
@@ -43,10 +43,13 @@ table td {
         text-align: center;
       }
       .head div{
+    font-family: verdana,arial,sans-serif;
+    color:#333333;
         padding-top:20px;
         font-size:40px;
       }
       .nav{
+        font-size:20px;
         position: absolute;
         top: 110px;
         left: 0;
@@ -77,14 +80,13 @@ table td {
 </head>
 
 <body>
-<div class="head"><div>复合标识区块链保护系统</div></div>
+<div class="head"><div>HIC区块链溯源防伪系统</div></div>
 <div class="nav">
 <ul>
     <li>
         产品数据维护
         <ul>
             <li><a href="/list">产品列表</a></li>
-            <li><a href="/addproduct">新增产品</a></li>
         </ul>
     </li>
     <li>
@@ -97,23 +99,24 @@ table td {
 </div>
 <div class="content" th:unless="${#lists.isEmpty(list)}">
   <h2><a>产品列表</a></h2>
-  
+  <hr />
   <table>
       <tr>
         <th>创建日期</th>
         <th>更新日期</th>
         <th>产品名称</th>
         <th>产品描述</th>
-        <th>HASH</th>
+        <th>产品图片</th>
+        <th>产品二维码</th>
       </tr>
 
       <tr th:each="row : ${list}">
         <td th:text="${row.createTime}"></td>
         <td th:text="${row.updateTime}"></td>
-        <td><a th:href="@{'/get/'+${row.gid}}" th:text="${row.productName}"></a></td>
+        <td th:text="${row.productName}"></td>
         <td th:text="${row.productDesc}"></td>
-        <td th:if="${row.producthash ne null}" th:text="${row.producthash.hash}"></td>
-        <td th:if="${row.producthash eq null}"><a th:href="@{'/generate/'+${row.gid}}">重新生成hash</a></td>
+        <td><img style="height:200px;width:200px" th:src="@{'/img/'+${row.picurl}}"></img></td>
+        <td><img style="height:200px;width:200px" th:src="@{'/img/'+${row.gid}+'.jpg'}"></img></td>
       </tr>
       <tr>
     <form th:action="@{/addproduct}" th:object="${product}" method="post">
@@ -128,6 +131,9 @@ table td {
        </td>
        <td>
        <input type="text" id="productDesc" name="productDesc" th:value="*{productDesc}" />
+       </td>
+       <td>
+       <input type="text" id="picurl" name="picurl" th:value="*{picurl}" />
        </td>
        <td>
                     添加后不能删除不能修改

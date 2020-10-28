@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tsinghua.hic.commons.dynamicdatasource.DSType;
-import tsinghua.hic.dao.ProducthashDao;
+import tsinghua.hic.dao.ProductinfohashDao;
 import tsinghua.hic.service.VerifyService;
 
 /**
@@ -17,12 +17,12 @@ import tsinghua.hic.service.VerifyService;
 public class VerifyServiceImpl implements VerifyService {
 
     @Autowired
-    private ProducthashDao producthashDao;
+    private ProductinfohashDao productinfohashDao;
 
     @Override
     @DSType(isMaster = false)
-    public Boolean verify(String gid) {
-        return producthashDao.findByHash(gid).isPresent();
+    public Boolean verify(String hash) {
+        return productinfohashDao.findByHash(hash).isPresent();
     }
 
 }

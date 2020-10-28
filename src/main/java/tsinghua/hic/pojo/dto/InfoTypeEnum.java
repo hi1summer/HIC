@@ -1,8 +1,8 @@
 package tsinghua.hic.pojo.dto;
 
 public enum InfoTypeEnum {
-    Undefined("无", 0), Producer("生产者", 1), Express("快递", 2),
-    Transaction("交易", 3);
+    Undefined("无", 0), Producer("生产商", 1), Express("快递商", 2),
+    Transaction("交易商", 3), VerifyUser("验证用户", 4);
 
     private String typeName;
 
