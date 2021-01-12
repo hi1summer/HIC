@@ -6,84 +6,15 @@
   <title>result</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <style>
-  input{
-      font-family: verdana,arial,sans-serif;
-    font-size:16px;
-    color:#333333;
-  
+  .content{
+    margin-top: 100px;
+    font-family: Kaiti;
+    font-size: 30px;
   }
-table {
-    font-family: verdana,arial,sans-serif;
-    font-size:22px;
-    color:#333333;
-    border-width: 1px;
-    border-color: #999999;
-    border-collapse: collapse;
-}
-table th {
-    background-color:#c3dde0;
-    border-width: 1px;
-    padding: 8px;
-    border-style: solid;
-    border-color: #a9c6c9;
-}
-table tr {
-    background-color:#d4e3e5;
-}
-table td {
-    border-width: 1px;
-    padding: 8px;
-    border-style: solid;
-    border-color: #a9c6c9;
-}
-      .head {
-        width:100%;
-        height:100px;
-        background-color:#d0e4fe;
-        text-align: center;
-      }
-      .head div{
-    font-family: verdana,arial,sans-serif;
-    color:#333333;
-        padding-top:20px;
-        font-size:40px;
-      }
-      .nav{
-        font-size:20px;
-        position: absolute;
-        top: 110px;
-        left: 0;
-        width: 20%;
-        height: 100%;
-      }
-      .content{
-        position: absolute;
-        top:110px;
-        left: 20%;
-        width: 80%;
-      }
-      ul{
-        list-style-type:none;
-		margin:0;
-		padding: 10px;
-		font-weight:bold;
-        color:#FFFFFF;
-		background-color:#bebebe;
-      }
-      ul li ul li{
-        padding:20px;
-      }
-      ul li ul li a:hover,ul li ul li a:active{
-      background-color:#cc0000;
-      }
-      .hide{
-      display:none
-      }
   </style>
 </head>
 
 <body>
-<div class="head"><div>HIC区块链溯源防伪系统</div></div>
 <div class="content">
   <h2><a th:text="${result}"></a></h2>
   <hr />

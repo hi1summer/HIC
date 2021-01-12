@@ -3,17 +3,22 @@
 <html>
 
 <head>
-  <title>addproductinfo</title>
+  <title>本源防伪溯源验证平台</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <style>
+  .toggle{
+     cursor: pointer;
+     background-color:#bebebe;
+     border:1px solid black;
+   }
   input, button, select, textarea{
-      font-family: verdana,arial,sans-serif;
+    font-family: Kaiti;
     font-size:25px;
     color:#333333;
   
   }
 table {
-    font-family: verdana,arial,sans-serif;
+    font-family: Kaiti;
     font-size:22px;
     color:#333333;
     border-width: 1px;
@@ -43,7 +48,7 @@ table td {
         text-align: center;
       }
       .head div{
-    font-family: verdana,arial,sans-serif;
+    font-family: Kaiti;
     color:#333333;
         padding-top:20px;
         font-size:40px;
@@ -58,7 +63,9 @@ table td {
       }
       .content{
         position: absolute;
-        top:110px;
+        font-family: Kaiti;
+        font-size: 30px;
+        top:50px;
         left: 10%;
         width: 80%;
       }
@@ -77,50 +84,64 @@ table td {
       background-color:#cc0000;
       }
       .hide{
-      display:none
+        display:none;
+      }
+      button{
+        margin-top: 20px;
+        width: 150px;
+        height:60px;
+        float:right;
       }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+      $(".toggle").each(function(){
+          var size = $(this).next().find("tr").length-1;
+          $(this).children("a").append("("+size+")");
+          if (size>10){
+              $(this).next().hide();
+          }
+          $(this).click(function(){
+              $(this).next().fadeToggle("medium");
+          });
+      }); 
+  });
+  </script>
 </head>
 
 <body>
-<div class="head"><div>HIC区块链溯源防伪系统</div></div>
 <div class="content">
-  <h2><a>添加产品信息</a></h2>
+  <h2><a>上传</a></h2>
   <hr />
     <form th:action="@{/addproductinfo}" th:object="${productinfo}" method="post">
        <p class="hide">gid：</p>
        <input class="hide" type="text" id="gid" name="gid" th:value="*{gid}" />
-       <p>创建时间：</p>
-       <input type="text" id="createTime" name="createTime" th:value="*{createTime}" />
-       <p>更新时间：</p>
-       <input type="text" id="updateTime" name="updateTime" th:value="*{updateTime}" />
-       <p>位置：</p>
-       <input type="text" id="loc" name="loc" th:value="*{loc}" />
-       <p>信息类型：</p>
-       <select id="select" th:field="*{infoType}">
-       <option th:each="type : ${infoTypes}" 
-               th:value="${type.getTypeIndex()}" 
-               th:text="${type.getTypeName()}"></option>
-       </select>
+       <p class="hide">位置：</p>
+       <input class="hide" type="text" id="loc" name="loc" th:value="*{loc}" />
+       <p class="hide">信息类型：</p>
+       <input class="hide" type="text" id="infoType" name="infoType" th:value="*{infoType}" />
        <div id="producer" th:if="${productinfo.infoType eq 1}">
-       <p>生产者描述：</p>
-       <input type="text" id="producerDesc" name="producerDesc" th:value="*{producerDesc}" />
-       <p>生产者名称：</p>
+       <p>厂家名称：</p>
        <input type="text" id="producerName" name="producerName" th:value="*{producerName}" />
+       <p>厂家编码：</p>
+       <input type="text" id="producerDesc" name="producerDesc" th:value="*{producerDesc}" />
        </div>
-       <div id="express" th:if="${productinfo.infoType eq 2}">
-       <p>快递描述：</p>
-       <input type="text" id="expressDesc" name="expressDesc" th:value="*{expressDesc}" />
-       <p>快递名称：</p>
-       <input type="text" id="expressName" name="expressName" th:value="*{expressName}" />
-       </div>
-       <div id="transaction" th:if="${productinfo.infoType eq 3}">
-       <p>交易描述：</p>
-       <input type="text" id="transactionDesc" name="transactionDesc" th:value="*{transactionDesc}" />
-       <p>交易名称：</p>
+       <div id="producer" th:if="${productinfo.infoType eq 3}">
+       <p>经销商名称：</p>
        <input type="text" id="transactionName" name="transactionName" th:value="*{transactionName}" />
        </div>
-       <p>内容：</p>
+       <div id="producer" th:if="${productinfo.infoType eq 4}">
+       <p>姓名：</p>
+       <input type="text" id="verifyuserName" name="verifyuserName" th:value="*{verifyuserName}" />
+       <p>电话：</p>
+       <input type="text" id="verifyuserDesc" name="verifyuserDesc" th:value="*{verifyuserDesc}" />
+       </div>
+       
+       <p th:if="${productinfo.infoType eq 4}">产品名称：</p>
+       <p th:if="${productinfo.infoType eq 3}">经销商编码：</p>
+       <p th:if="${productinfo.infoType eq 2}">提单#：</p>
+       <p th:if="${productinfo.infoType eq 1}">产品名称：</p>
        <textarea id="content" name="content" th:value="*{content}" style="height:200px; width:500px">
        </textarea>
        <p>请确认，添加不能删除不能修改</p>
@@ -128,6 +149,94 @@ table td {
        <hr />
        <br /><br /><br />
     </form>
+
+	<div th:if="${productinfo.infoType eq 3 || productinfo.infoType eq 4}">
+	  <h2><a>下载</a></h2>
+	  <hr />
+	  <img style="height:200px;width:200px" th:src="@{'/img/'+${product.picurl}}"></img>
+	  <h3><a th:text="${product.productName}"></a></h3>
+	  
+  <h2 class="toggle"><a>生产厂家信息</a></h2>
+  <table>
+      <tr>
+        <th>创建日期</th>
+        <th>更新日期</th>
+        <th>位置</th>
+        <th>厂家名称</th>
+        <th>厂家编码</th>
+        <th>产品名称</th>
+      </tr>
+      <tr th:each="row: ${productinfos}" th:if="${row.infoType eq 1}">
+        <td th:text="${row.createTime}"></td>
+        <td th:text="${row.updateTime}"></td>
+        <td th:text="${row.loc}"></td>
+        <td th:text="${row.producerName}"></td>
+        <td th:text="${row.producerDesc}"></td>
+        <td th:text="${row.content}"></td>
+      </tr>
+  </table>
+  <h2 class="toggle"><a>物流信息</a></h2>
+  <table>
+      <tr>
+        <th>创建日期</th>
+        <th>更新日期</th>
+        <th>位置</th>
+        <th>提单#</th>
+      </tr>
+
+      <tr th:each="row: ${productinfos}" th:if="${row.infoType eq 2}">
+        <td th:text="${row.createTime}"></td>
+        <td th:text="${row.updateTime}"></td>
+        <td th:text="${row.loc}"></td>
+        <td th:text="${row.content}"></td>
+      </tr>
+  </table>
+  <div th:if="${productinfo.infoType eq 4}">
+  <h2 class="toggle"><a>经销商信息</a></h2>
+  <table>
+      <tr>
+        <th>创建日期</th>
+        <th>更新日期</th>
+        <th>位置</th>
+        <th>经销商名称</th>
+        <th>经销商编码</th>
+      </tr>
+
+      <tr th:each="row: ${productinfos}" th:if="${row.infoType eq 3}">
+        <td th:text="${row.createTime}"></td>
+        <td th:text="${row.updateTime}"></td>
+        <td th:text="${row.loc}"></td>
+        <td th:text="${row.transactionName}"></td>
+        <td th:text="${row.content}"></td>
+      </tr>
+
+  </table>
+  <h2 class="toggle"><a>用户信息</a></h2>
+  <table>
+      <tr>
+        <th>创建日期</th>
+        <th>更新日期</th>
+        <th>位置</th>
+        <th>姓名</th>
+        <th>电话</th>
+        <th>产品名称</th>
+      </tr>
+
+      <tr th:each="row: ${productinfos}" th:if="${row.infoType eq 4}">
+        <td th:text="${row.createTime}"></td>
+        <td th:text="${row.updateTime}"></td>
+        <td th:text="${row.loc}"></td>
+        <td th:text="${row.verifyuserName}"></td>
+        <td th:text="${row.verifyuserDesc}"></td>
+        <td th:text="${row.content}"></td>
+      </tr>
+
+  </table>
+  </div>
+  <br />
+  <br />
+  <br />
+  </div>
 
 </div>
 </body>

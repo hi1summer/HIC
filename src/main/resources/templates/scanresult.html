@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>result</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <style>
+  .content{
+    margin-top: 100px;
+    font-family: Kaiti;
+    font-size: 30px;
+  }
+  </style>
+</head>
+
+<body>
+<div class="content">
+  <div th:if="${product ne null}">
+  <img style="height:200px;width:200px" th:src="@{'/img/'+${product.picurl}}"></img>
+  <h3><a th:text="${product.productName}"></a></h3>
+  </div>
+  <h2><a th:text="${result}"></a></h2>
+  <h2><a th:text="${result2}"></a></h2>
+  <hr />
+  <a th:href="@{'/demodata/'+${gid}}">
+  <input class="content" type="button" value="下一页" style="height: 60px; width: 200px;float:right"></input>
+  </a>
+</div>
+</body>
+
+</html>
