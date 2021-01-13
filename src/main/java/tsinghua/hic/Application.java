@@ -3,9 +3,9 @@ package tsinghua.hic;
 import java.util.TimeZone;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringCloudApplication
+@SpringBootApplication
 public class Application {
     public static void main(String[] args) {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));

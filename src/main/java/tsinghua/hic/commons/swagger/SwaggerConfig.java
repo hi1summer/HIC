@@ -13,8 +13,6 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import tsinghua.hic.controller.TestController;
-import tsinghua.hic.controller.VerifyController;
 
 @Configuration
 @EnableSwagger2
@@ -41,14 +39,14 @@ public class SwaggerConfig {
                 .version("1.0-beta").build();
     }
 
-    @Bean
-    public TestController testController() {
-        return new TestController();
-    }
-
-    @Bean
-    public VerifyController verifyController() {
-        return new VerifyController();
-    }
+//    @Bean
+//    public TestController testController() {
+//        return new TestController();
+//    }
+//
+//    @Bean
+//    public VerifyController verifyController() {
+//        return new VerifyController();
+//    }
 
 }
