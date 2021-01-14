@@ -20,4 +20,10 @@ public class ProductServiceImpl implements ProductService {
     public Optional<Product> get(String gid) {
         return productDao.findById(gid);
     }
+
+    @Override
+    public Product update(Product product) {
+        return productDao.save(product);
+
+    }
 }

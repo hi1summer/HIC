@@ -12,4 +12,6 @@ import tsinghua.hic.pojo.po.Product;
  */
 public interface ProductService {
     Optional<Product> get(String gid);
+
+    Product update(Product product);
 }

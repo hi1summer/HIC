@@ -27,7 +27,7 @@ public class TestController {
     public ResponseEntity<Product> test() throws Exception {
         try {
             Optional<Product> productOptional = productService.get("1");
-            if (!productOptional.isEmpty()) {
+            if (productOptional.isPresent()) {
                 return new ResponseEntity<Product>(productOptional.get(),
                         HttpStatus.OK);
             } else {
@@ -35,7 +35,7 @@ public class TestController {
                         HttpStatus.OK);
             }
         } catch (Exception e) {
-
+            log.error(e.getLocalizedMessage());
         }
         return new ResponseEntity<Product>(new Product(), HttpStatus.OK);
     }

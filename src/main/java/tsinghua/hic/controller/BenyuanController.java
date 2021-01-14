@@ -69,9 +69,20 @@ public class BenyuanController {
                 Date nowDate = new Date();
                 SimpleDateFormat format = new SimpleDateFormat(
                         "yyyy-MM-dd HH:mm:ss");
-                if (!product.isEmpty()) {
+                if (product.isPresent()) {
                     Product actualProduct = product.get();
-                    jsonObject.put("id", codInteger);
+                    if (actualProduct.getFirstvalidateTime() == null
+                            || actualProduct.getFirstvalidateTime().trim()
+                                    .isEmpty()) {
+                        actualProduct
+                                .setFirstvalidateTime(format.format(nowDate));
+                        actualProduct.setValidateCount(0);
+                    }
+                    actualProduct.setValidateCount(
+                            actualProduct.getValidateCount() + 1);
+                    actualProduct = productService.update(actualProduct);
+
+                    jsonObject.put("id", actualProduct.getId());
                     jsonObject.put("successcontent",
                             actualProduct.getProductName() + "\n"
                                     + actualProduct.getId() + "\n"
@@ -83,12 +94,13 @@ public class BenyuanController {
                     jsonObject.put("bottomcount",
                             actualProduct.getValidateCount() + "次");
                 } else {
-                    jsonObject.put("notexist", "true");
+                    jsonObject.put("notexist", true);
                 }
             } else {
-                jsonObject.put("picinvalid", "true");
+                jsonObject.put("picinvalid", true);
             }
             tempFile.delete();
+            log.info(jsonObject.toString());
             return new ResponseEntity<String>(jsonObject.toString(),
                     HttpStatus.OK);
         } catch (Exception e) {
