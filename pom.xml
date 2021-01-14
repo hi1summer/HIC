@@ -59,10 +59,10 @@
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
         <!-- spring cloud eureka client -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
+        </dependency>-->
         <!-- spring cloud hystrix -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -99,10 +99,10 @@
             <version>${springfox.version}</version>
         </dependency>
         <!-- zipkin -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-zipkin</artifactId>
-        </dependency>
+        </dependency>-->
         <!-- thymleaf -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
