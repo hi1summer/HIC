@@ -47,6 +47,7 @@ public class BenyuanController {
                     + +System.currentTimeMillis() + file.getOriginalFilename();
             File tempFile = new File(filenameString);
             file.transferTo(tempFile);
+            log.info(filenameString);
             FileSystemResource resource = new FileSystemResource(tempFile);
 
             HttpHeaders headers = new HttpHeaders();
@@ -99,7 +100,7 @@ public class BenyuanController {
             } else {
                 jsonObject.put("picinvalid", true);
             }
-            tempFile.delete();
+//            tempFile.delete();
             log.info(jsonObject.toString());
             return new ResponseEntity<String>(jsonObject.toString(),
                     HttpStatus.OK);
