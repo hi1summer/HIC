@@ -9,7 +9,8 @@ public class ShareConfigure implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
-                .addResourceLocations("file:C:/share/");
+                .addResourceLocations("file:C:/share/")
+                .addResourceLocations("classpath:/static/");
         WebMvcConfigurer.super.addResourceHandlers(registry);
     }
 }
