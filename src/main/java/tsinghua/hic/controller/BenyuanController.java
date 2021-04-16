@@ -83,17 +83,30 @@ public class BenyuanController {
                             actualProduct.getValidateCount() + 1);
                     actualProduct = productService.update(actualProduct);
 
-                    jsonObject.put("id", actualProduct.getId());
-                    jsonObject.put("successcontent",
-                            actualProduct.getProductName() + "\n"
-                                    + actualProduct.getId() + "\n"
-                                    + actualProduct.getCreateTime() + "\n"
-                                    + actualProduct.getExpireTime());
-                    jsonObject.put("bottomtime",
-                            actualProduct.getFirstvalidateTime() + "\n"
-                                    + format.format(nowDate));
-                    jsonObject.put("bottomcount",
-                            actualProduct.getValidateCount() + "次");
+                    if (actualProduct.getProductName().contains("美贺庄园")) {
+                        byte[] bytearray = actualProduct.getId()
+                                .getBytes("utf8");
+                        Integer newid = bytearray[0] * 65536
+                                + bytearray[1] * 256 | bytearray[2];
+                        jsonObject.put("id", actualProduct.getId());
+                        jsonObject.put("successcontent",
+                                actualProduct.getProductName() + "\n"
+                                        + newid.toString() + "\n"
+                                        + actualProduct.getProductDesc());
+                        jsonObject.put("jiuzhuang", true);
+                    } else {
+                        jsonObject.put("id", actualProduct.getId());
+                        jsonObject.put("successcontent",
+                                actualProduct.getProductName() + "\n"
+                                        + actualProduct.getId() + "\n"
+                                        + actualProduct.getCreateTime() + "\n"
+                                        + actualProduct.getExpireTime());
+                        jsonObject.put("bottomtime",
+                                actualProduct.getFirstvalidateTime() + "\n"
+                                        + format.format(nowDate));
+                        jsonObject.put("bottomcount",
+                                actualProduct.getValidateCount() + "次");
+                    }
                 } else {
                     jsonObject.put("notexist", true);
                 }

@@ -17,7 +17,6 @@ public class ThymeleafController {
 
     @GetMapping("/scan")
     public String scan(ModelMap model) {
-        model.addAttribute("home", "home");
         return "scan";
     }
 }

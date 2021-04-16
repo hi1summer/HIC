@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	<title>宁波本源智能科技有限公司</title>
+    <link rel="stylesheet" type="text/css" media="all" th:href=@{css/camera.css}>
+    <script type="text/javascript" th:src=@{js/jquery.min.js}></script>
+    <script async th:src=@{js/opencv.js} onload="onOpenCvReady();" type="text/javascript"></script>
+    <script>
+    function scancanvas(speed){
+        this.canvas = document.querySelector('#scancanvas');
+        var width = $("#video").width();
+        var height = $("#video").height();
+        this.canvas.width= width;
+        this.canvas.height= height;
+        this.context = this.canvas.getContext('2d');
+        this.context.globalAlpha=0.8;
+        this.context.lineWidth=8;
+        this.context.strokeStyle="Lime";
+        this.context.shadowBlur=20;
+        this.context.shadowColor="GreenYellow";
+        this.i = 0;
+        this.speed = speed;
+        this.draw = function(){
+            var that = this;
+            this.i = this.i + this.speed;
+            if (this.i >= height){
+                this.i = 0;
+            }
+            this.context.clearRect(0,0,width,height);
+            this.context.beginPath();
+            this.context.moveTo(100,this.i);
+            this.context.lineTo(width-100,this.i);
+            this.context.stroke();
+            window.requestAnimationFrame(function(){
+                that.draw();
+            });
+        }
+    }
+    function onOpenCvReady(){
+        $(document).ready(function(){
+            var video = document.querySelector('#video');
+            var canvas = document.querySelector('#canvas');
+            canvas.width=800;
+            canvas.height=1200;
+            $("#scancanvas")[0].style.left = $("#video").position().left;
+            $("#scancanvas")[0].style.top = $("#video").position().top;
+            var context = canvas.getContext('2d');
+            var ori;
+
+
+
+            //后置摄像头
+            var constraints = { video: { facingMode: { exact: "environment" } } };
+            navigator.mediaDevices.getUserMedia(constraints)
+            .then(function(stream) {
+                video.srcObject = stream;
+                var scan = new scancanvas(5);
+                scan.draw();
+                video.onloadedmetadata = function(e) {
+                    video.play();
+                    show("initing");
+                    cv['onRuntimeInitialized']=()=>{
+                    	show("initialized");
+                        read("img/comp.png",function(mat){
+                            ori = mat;
+                            takepic();
+                        });
+                    }
+                };
+            })
+            .catch(function(err) {
+              show(err.name + ": " + err.message);
+            });
+            function wait(){
+            	setTimeout(function(){
+                    
+                },3000);
+            }
+
+            function takepic(){
+                context.drawImage(video,0,0, canvas.width,canvas.height);
+                var dataURL = canvas.toDataURL('image/jpeg',1.0);
+
+                read(dataURL,function(mat){
+                    //cv.imshow("canvasOutput",mat);
+                    var mean = getMean(mat);
+                    $("#mean").text(mean);
+                    if (mean>=1.8){
+                        var match = compare(mat);
+                        $("#match").text(match.size());
+                        if (match.size()>=30){
+                            show("found");
+                            upload(dataURL);
+                        } else {
+                            setTimeout(function(){
+                                takepic();
+                            },3000);
+                        }
+                    } else {
+                        setTimeout(function(){
+                            takepic();
+                        },3000);
+                    }
+                });
+            }
+
+            function getMean(mat){
+                var grey = new cv.Mat();
+                var dest = new cv.Mat();
+                cv.cvtColor(mat,grey,cv.COLOR_BGR2GRAY);
+                cv.Laplacian(grey,dest,cv.CV_16U);
+                return cv.mean(dest)[0];
+            }
+
+            function compare(photo){
+                var orikeypoints = new cv.KeyPointVector(), oridescriptors = new cv.Mat();
+                getKeypointsAndDescriptors(ori,orikeypoints,oridescriptors);
+                var photokeypoints = new cv.KeyPointVector(), photodescrpitors = new cv.Mat();
+                getKeypointsAndDescriptors(photo,photokeypoints,photodescrpitors);
+
+                var match = getMatch(oridescriptors,photodescrpitors,0.7);
+                //var outmat = new cv.Mat();
+                //cv.drawMatches(ori,orikeypoints,photo,photokeypoints,match,outmat);
+                //cv.imshow("canvasOutput", outmat);
+                return match;
+            }
+
+            function getKeypointsAndDescriptors(mat,keypoints,descriptors){
+                var orb = new cv.ORB()
+                var blankmat = new cv.Mat();
+                orb.detectAndCompute(mat,blankmat,keypoints,descriptors);
+                var descriptorArray = Array.from(descriptors.data);
+                for (var i=0;i<keypoints.size();i++){
+                  for (var j=i+1; j<keypoints.size();j++){
+                    if (keypoints.get(i).response<keypoints.get(j).response){
+                      var temp = keypoints.get(i);
+                      keypoints.set(i,keypoints.get(j));
+                      keypoints.set(j,temp);
+                      for (var n = 0; n<32; n++){
+                        var temp2 = descriptorArray[i*32+n];
+                        descriptorArray[i*32+n] = descriptorArray[j*32+n];
+                        descriptorArray[j*32+n] = temp2;
+                      }
+                    }
+                  }
+                }
+            }
+
+            function getMatch(oridescriptors,photodescriptors,seed){
+                var matcher = new cv.BFMatcher();
+                var matches = new cv.DMatchVectorVector();
+                matcher.knnMatch(oridescriptors,photodescriptors,matches,2);
+                var match = new cv.DMatchVector();
+                for (var i=0;i<matches.size();i++){
+                  var onematch = matches.get(i)
+                  if (onematch.get(0).distance<seed*onematch.get(1).distance){
+                    match.push_back(onematch.get(0))
+                  }
+                }
+                return match;
+            }
+
+            function upload(dataURL){
+                var filename = Date.now()+".jpg";
+                var file = dataURLtoFile(dataURL, filename);
+                var formData = new FormData();
+                formData.append('file', file);
+                $.ajax({
+                    url: '/upload',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false
+                }).done(function(res){
+                    show(JSON.stringify(res));
+                }).fail(function(res){
+                    show(JSON.stringify(res));
+                    setTimeout(function(){
+                        takepic();
+                    },3000);
+                });
+            }
+
+            function read(url, callback){
+                var nimg = new Image();
+                nimg.onload = function(){
+                  let mat = cv.imread(nimg);
+                  callback(mat);
+                }
+                nimg.src = url;
+            }
+
+            function dataURLtoFile(dataurl, filename){
+              var arr = dataurl.split(',');
+              var mime = arr[0].match(/:(.*?);/)[1];
+              var bstr = atob(arr[1]);
+              var n = bstr.length;
+              var u8arr = new Uint8Array(n);
+              while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+              }
+              return new File([u8arr], filename, { type: mime });
+            }
+
+            function show(text){
+                console.log(text);
+                $("#info").text(text);
+            }
+
+        });
+    }
+    </script>
+
+	</head>
+	
+	<body>
+		<div class="content">
+	        <div class="up">
+	          <image src="/img/logo.png" class="logo"></image>
+	          <image src="/img/title.png" class="title"></image>
+	        </div>
+	        <div class="down">
+	            <input type='file' hidden="true" id="file" accept="image/*"></input>
+	            <text class="desc">请用您的手机给产品的图像拍照</text>
+	            <div class="center">
+	                <video id="video" webkit-playsinline="" playsinline="true" class="camera"></video>
+	                <canvas id="canvas" hidden="true" width="800" height="1200"></canvas>
+	                <canvas id="canvasOutput" hidden="true" width="800" height="1200"></canvas>
+                    <canvas id="scancanvas" class="bar"></canvas>
+	            </div>
+	            <text id="info" class="info">loading</text>
+		        <text id="mean">
+		            mean: loading!
+		        </text>
+		        <text id="match">
+		            match: loading!
+		        </text>
+	        </div>
+		</div>
+	</body>
+</html>

@@ -117,14 +117,23 @@
                                    clearInterval(inter);
                                    draw(100);
                                    $(".info").text('检测成功，跳转中');
-                                   setTimeout(function(){
-                                       wx.miniProgram.redirectTo({
-                                           url: '/pages/success/success?id='+resObj.id
-                                                   +"&successcontent="+resObj.successcontent
-                                                   +"&bottomtime="+resObj.bottomtime
-                                                   +"&bottomcount="+resObj.bottomcount
-                                       });
-                                   },1000);
+                                   if (resObj.jiuzhuang){
+                                       setTimeout(function(){
+                                           wx.miniProgram.redirectTo({
+                                               url: '/pages/jiuzhuang/jiuzhuang?id='+resObj.id
+                                                       +"&successcontent="+resObj.successcontent
+                                           });
+                                       },1000);                                	   
+                                   } else {
+	                                   setTimeout(function(){
+	                                       wx.miniProgram.redirectTo({
+	                                           url: '/pages/success/success?id='+resObj.id
+	                                                   +"&successcontent="+resObj.successcontent
+	                                                   +"&bottomtime="+resObj.bottomtime
+	                                                   +"&bottomcount="+resObj.bottomcount
+	                                       });
+	                                   },1000);
+                                   }
                                }
                           }
                   });
