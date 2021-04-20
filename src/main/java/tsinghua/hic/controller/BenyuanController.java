@@ -1,9 +1,15 @@
 package tsinghua.hic.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -44,10 +50,28 @@ public class BenyuanController {
     public ResponseEntity<String> upload(MultipartFile file) {
         try {
             String filenameString = ResourceUtils.getURL("").getPath()
-                    + +System.currentTimeMillis() + file.getOriginalFilename();
-            File tempFile = new File(filenameString);
-            file.transferTo(tempFile);
+                    + System.currentTimeMillis() + file.getOriginalFilename();
+            BufferedInputStream in = new BufferedInputStream(
+                    file.getInputStream());
+            BufferedImage bi = ImageIO.read(in);
+            int height = bi.getHeight();
+            int width = bi.getWidth();
             log.info(filenameString);
+            log.info("height" + height + "width" + width);
+            BufferedImage tag;
+            if (width > height) {
+                tag = new BufferedImage(960, 720, BufferedImage.TYPE_INT_RGB);
+                tag.getGraphics().drawImage(bi, 0, 0, 960, 720, null);
+            } else {
+                tag = new BufferedImage(720, 960, BufferedImage.TYPE_INT_RGB);
+                tag.getGraphics().drawImage(bi, 0, 0, 720, 960, null);
+            }
+            BufferedOutputStream out = new BufferedOutputStream(
+                    new FileOutputStream(filenameString));
+            ImageIO.write(tag, "PNG", out);
+            in.close();
+            out.close();
+            File tempFile = new File(filenameString);
             FileSystemResource resource = new FileSystemResource(tempFile);
 
             HttpHeaders headers = new HttpHeaders();

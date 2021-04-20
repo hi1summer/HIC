@@ -52,93 +52,75 @@
     		  var filename = this.files[0].name;
     		  url = window.URL.createObjectURL(this.files[0])
     		  $("#camera").attr('src',url);
-    		  var nimg = new Image();
-    		  nimg.src = url;
- 		      nimg.onload = function(){
-                  var canvas = document.querySelector('#canvas');
-	              var context = canvas.getContext('2d');
- 		    	  if (nimg.height > nimg.width){
- 		    		  canvas.width = 720;
- 		    		  canvas.height = 960;
- 		    		  context.drawImage(nimg,0,0, 720, 960);
- 		    	  } else {
- 		    		 canvas.width = 960;
-                     canvas.height = 720;
- 		    		 context.drawImage(nimg,0,0, 960, 720);
- 		    	  }
- 		    	  var dataURL = canvas.toDataURL('image/jpeg',1.0);
- 		    	  var file = dataURLtoFile(dataURL, filename);
- 	              var formData = new FormData();
- 	              formData.append('file',file); 
-    			  
-    			  var prog = 0;
-                  var inter = setInterval(function(){
-                      if (prog>=100){
+              var formData = new FormData();
+              formData.append('file',this.files[0]); 
+   			  
+   			  var prog = 0;
+              var inter = setInterval(function(){
+                  if (prog>=100){
+                      clearInterval(inter);
+                  }
+                  prog = prog+0.25;
+                  draw(prog);
+              },60);
+              $.post({url: "/upload",
+                      data: formData,
+                      contentType: false,
+                      processData: false,
+                      error: function(res){
                           clearInterval(inter);
-                      }
-                      prog = prog+0.25;
-                      draw(prog);
-                  },60);
-                  $.post({url: "/upload",
-                          data: formData,
-                          contentType: false,
-                          processData: false,
-                          error: function(res){
-                              clearInterval(inter);
-                              draw(0);
-                              $(".info").text(res);
-                              setTimeout(function(){
-                                  wx.miniProgram.redirectTo({
-                                      url: '/pages/fail/fail'
-                                  });
-                              },1000);
-                          },
-                          success: function(res){
-                               var resObj = JSON.parse(res);
-                               if (resObj.notexist){
-                                   clearInterval(inter);
-                                   draw(0);
-                                   $(".info").text('溯源信息不存在');
+                          draw(0);
+                          $(".info").text(res);
+                          setTimeout(function(){
+                              wx.miniProgram.redirectTo({
+                                  url: '/pages/fail/fail'
+                              });
+                          },1000);
+                      },
+                      success: function(res){
+                           var resObj = JSON.parse(res);
+                           if (resObj.notexist){
+                               clearInterval(inter);
+                               draw(0);
+                               $(".info").text('溯源信息不存在');
+                               setTimeout(function(){
+                                   wx.miniProgram.redirectTo({
+                                       url: '/pages/fail/fail'
+                                   });
+                               },1000);
+                           } else if (resObj.picinvalid){
+                               clearInterval(inter);
+                               draw(0);
+                               $(".info").text('照片不含防伪信息');
+                               setTimeout(function(){
+                                   wx.miniProgram.redirectTo({
+                                       url: '/pages/fail/fail'
+                                   });
+                               },1000);
+                           } else if (resObj.code == 0){
+                               clearInterval(inter);
+                               draw(100);
+                               $(".info").text('检测成功，跳转中');
+                               if (resObj.jiuzhuang){
                                    setTimeout(function(){
                                        wx.miniProgram.redirectTo({
-                                           url: '/pages/fail/fail'
+                                           url: '/pages/jiuzhuang/jiuzhuang?id='+resObj.id
+                                                   +"&successcontent="+resObj.successcontent
                                        });
-                                   },1000);
-                               } else if (resObj.picinvalid){
-                                   clearInterval(inter);
-                                   draw(0);
-                                   $(".info").text('照片不含防伪信息');
-                                   setTimeout(function(){
-                                       wx.miniProgram.redirectTo({
-                                           url: '/pages/fail/fail'
-                                       });
-                                   },1000);
-                               } else if (resObj.code == 0){
-                                   clearInterval(inter);
-                                   draw(100);
-                                   $(".info").text('检测成功，跳转中');
-                                   if (resObj.jiuzhuang){
-                                       setTimeout(function(){
-                                           wx.miniProgram.redirectTo({
-                                               url: '/pages/jiuzhuang/jiuzhuang?id='+resObj.id
-                                                       +"&successcontent="+resObj.successcontent
-                                           });
-                                       },1000);                                	   
-                                   } else {
-	                                   setTimeout(function(){
-	                                       wx.miniProgram.redirectTo({
-	                                           url: '/pages/success/success?id='+resObj.id
-	                                                   +"&successcontent="+resObj.successcontent
-	                                                   +"&bottomtime="+resObj.bottomtime
-	                                                   +"&bottomcount="+resObj.bottomcount
-	                                       });
-	                                   },1000);
-                                   }
+                                   },1000);                                	   
+                               } else {
+                                setTimeout(function(){
+                                    wx.miniProgram.redirectTo({
+                                        url: '/pages/success/success?id='+resObj.id
+                                                +"&successcontent="+resObj.successcontent
+                                                +"&bottomtime="+resObj.bottomtime
+                                                +"&bottomcount="+resObj.bottomcount
+                                    });
+                                },1000);
                                }
-                          }
-                  });
-    		  };
-    		  
+                           }
+                      }
+                  });    		  
           });
       });
     </script>
