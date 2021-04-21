@@ -98,7 +98,7 @@ public class BenyuanController {
                     Product actualProduct = product.get();
                     if (actualProduct.getFirstvalidateTime() == null
                             || actualProduct.getFirstvalidateTime().trim()
-                                    .isEmpty()) {
+                            .isEmpty()) {
                         actualProduct
                                 .setFirstvalidateTime(format.format(nowDate));
                         actualProduct.setValidateCount(0);
@@ -119,6 +119,9 @@ public class BenyuanController {
                                         + actualProduct.getProductDesc());
                         jsonObject.put("jiuzhuang", true);
                     } else {
+                        if (actualProduct.getProductName().contains("展览图片")){
+                            jsonObject.put("exhibition",true);
+                        }
                         jsonObject.put("id", actualProduct.getId());
                         jsonObject.put("successcontent",
                                 actualProduct.getProductName() + "\n"
