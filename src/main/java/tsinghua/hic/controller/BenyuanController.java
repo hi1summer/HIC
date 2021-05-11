@@ -56,16 +56,13 @@ public class BenyuanController {
             BufferedImage bi = ImageIO.read(in);
             int height = bi.getHeight();
             int width = bi.getWidth();
+            int newheight = 960 * width / height;
             log.info(filenameString);
             log.info("height" + height + "width" + width);
-            BufferedImage tag;
-            if (width > height) {
-                tag = new BufferedImage(960, 720, BufferedImage.TYPE_INT_RGB);
-                tag.getGraphics().drawImage(bi, 0, 0, 960, 720, null);
-            } else {
-                tag = new BufferedImage(720, 960, BufferedImage.TYPE_INT_RGB);
-                tag.getGraphics().drawImage(bi, 0, 0, 720, 960, null);
-            }
+            BufferedImage tag = new BufferedImage(newheight, 960,
+                    BufferedImage.TYPE_INT_RGB);
+            tag.getGraphics().drawImage(bi, 0, 0, newheight, 960, null);
+
             BufferedOutputStream out = new BufferedOutputStream(
                     new FileOutputStream(filenameString));
             ImageIO.write(tag, "PNG", out);
@@ -98,7 +95,7 @@ public class BenyuanController {
                     Product actualProduct = product.get();
                     if (actualProduct.getFirstvalidateTime() == null
                             || actualProduct.getFirstvalidateTime().trim()
-                            .isEmpty()) {
+                                    .isEmpty()) {
                         actualProduct
                                 .setFirstvalidateTime(format.format(nowDate));
                         actualProduct.setValidateCount(0);
@@ -119,8 +116,8 @@ public class BenyuanController {
                                         + actualProduct.getProductDesc());
                         jsonObject.put("jiuzhuang", true);
                     } else {
-                        if (actualProduct.getProductName().contains("展览图片")){
-                            jsonObject.put("exhibition",true);
+                        if (actualProduct.getProductName().contains("展览图片")) {
+                            jsonObject.put("exhibition", true);
                         }
                         jsonObject.put("id", actualProduct.getId());
                         jsonObject.put("successcontent",
