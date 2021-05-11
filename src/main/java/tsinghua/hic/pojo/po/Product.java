@@ -18,6 +18,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
 public class Product implements Serializable {
 
+    @Override
+    public String toString() {
+        return "Product [id=" + id + ", createTime=" + createTime
+                + ", expireTime=" + expireTime + ", firstvalidateTime="
+                + firstvalidateTime + ", productDesc=" + productDesc
+                + ", productName=" + productName + ", validateCount="
+                + validateCount + "]";
+    }
+
     private static final long serialVersionUID = 544804407821105902L;
 
     @Id

@@ -115,6 +115,14 @@ public class BenyuanController {
                                         + newid.toString() + "\n"
                                         + actualProduct.getProductDesc());
                         jsonObject.put("jiuzhuang", true);
+                    } else if (actualProduct.getProductName().contains("矿泉水")) {
+                        jsonObject.put("number",
+                                actualProduct.getProductDesc());
+                        jsonObject.put("water", true);
+                    } else if (actualProduct.getProductName().contains("眼影盒")) {
+                        jsonObject.put("number",
+                                actualProduct.getProductDesc());
+                        jsonObject.put("box", true);
                     } else {
                         if (actualProduct.getProductName().contains("展览图片")) {
                             jsonObject.put("exhibition", true);

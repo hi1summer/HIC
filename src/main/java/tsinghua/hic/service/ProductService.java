@@ -14,4 +14,6 @@ public interface ProductService {
     Optional<Product> get(String gid);
 
     Product update(Product product);
+
+    Product add(Product product);
 }
