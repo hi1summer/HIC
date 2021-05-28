@@ -1,6 +1,9 @@
 package tsinghua.hic.controller;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,19 +46,25 @@ public class TestController {
     @GetMapping(value = "/test2")
     @ResponseBody
     public ResponseEntity<String> testAdd() throws Exception {
-        String inputString = "'7c', 'N9', 'cs', 'a7', 'K2', 'UI', 'HR', 'i2', 'fm', 'DZ', '2n', 'Jc', 'qO', 'xE', 'lj', 'to', '0X', 'gw', 'T5', 'c6', 'IU', 'wU', 'pM', 'AU', 'HR', 'DG', 'vY', 'Y0', 'wW', 'Ed', 'ik', 'we', '2u', 'rA', '6M', 'th', 'kq', 'WF', 'Pp', 'Tv', 'hc', '3f', 'Lk', 'g5', 'PF', 'Ht', 'DA', 'Uc', 'kc', 'VD', 'h2', 'Ff', 'XM', 'Ad', 'ld', 'Mi', '8j', 'GD', 'mR', 'ss', 'nI', 'Nq', 'UI', 'N2', 'nw', 'vh', 'BK', 'PR', 'Qj', 'IE', 'tQ', 'ms', 'AO', 'wq', '1R', 'Pf', 'VK', '1W', 'TO', 'u8', 'HI', '3h', 'zK', 'b5', 'sM', 'DZ', 'bB', 'wR', 'qq', 'b6', 'F0', 'Kn', 'Gg', 'oc', 'Jg', 'q1', 'FJ', 'FY', '0n', 'IX', 'z5', '6T', '8X', 'ns', 'Gv', 'Ug', 'AG', '40', 'vo', 'sl', 'nY', 'TZ', 'fW', 'pJ', 'Hc', 'V1', 'iz', 'LC', '7f', '8E'";
-        String nameString = "矿泉水";
-        String descString = "矿泉水";
+        String inputString = "'QgpmTt', 'k4AiAe', 'zRrB6F', '9ccP3e', 'IqLCOb', 'WFvgnz', 'QSNqIJ', 'YMaxIM', '1vtfby', 'ntO1Vv', 'z6treP', 'oOIYOc', 'mJES0g', 'nCtpe2', '0MsxUA', 'Fr3Hrz', 'rGc6qc', '6FMyId', 'qfRAcp', 'x9CaiL', 'qqaCfi', '5uJmho', 'SkB2bO', '0f5Xh8', 'STgQtN', 'nhZB3d', '8mc2e2', 'nLJhXK', 'WJj9VP', 'A68HXZ', 'MYyJs4', '6ylr4J', 'd7bgur', 'ktaB4Z', 'Ik9gX2', 'FrvF0L', 'zasHqq', 'UwCoF4', 'wq5Njh', 'YBj8QS', 'SSYiaQ', 'BM8H46', 'L69mFu', 'hK1SZI', 'JNBnRY', 'rKFZUF', 'bas2gE', 'GeHnwp', 'wJB5uU', '6yW1LN'";
+        String nameString = "眼影盒";
         String createTime = "2021-01-01";
         String expireTime = "2021-01-01";
         String[] inputArray = inputString.split(",");
-        Integer i = 0;
-        for (String input : inputArray) {
+        Set<String> inputSet = new HashSet<>(Arrays.asList(inputArray));
+        Integer i = 21000;
+        for (String input : inputSet) {
             i++;
             input = input.trim();
             input = input.substring(1, input.length() - 1);
-
-            log.info(i + ": " + input);
+            Product product = new Product();
+            product.setId(input);
+            product.setCreateTime(createTime);
+            product.setExpireTime(expireTime);
+            product.setProductName(nameString);
+            product.setProductDesc(i.toString());
+            product.setValidateCount(0);
+            productService.add(product);
         }
         return new ResponseEntity<String>("OK", HttpStatus.OK);
     }

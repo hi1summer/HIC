@@ -6,6 +6,7 @@
     <title>宁波本源智能科技有限公司</title>
     <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" type="text/css" media="all" th:href=@{css/scan.css}>
+    <link rel="shortcut icon" href="#" />
     <script type="text/javascript" th:src=@{js/jquery.min.js}></script>
     <script type="text/javascript" src="js/jweixin-1.3.2.js"></script>
     <script type="text/javascript" th:inline="javascript">
@@ -50,8 +51,10 @@
             });
             $("#file").change(function(){
                 var filename = this.files[0].name;
-                url = window.URL.createObjectURL(this.files[0])
-                $("#camera").attr('src',url);
+                //url = window.URL.createObjectURL(this.files[0])
+                //$("#camera").attr('src',url);
+                $("#camera").attr('hidden',true);
+                $("#cameravideo").attr("hidden",false);
                 var formData = new FormData();
                 formData.append('file',this.files[0]);
 
@@ -117,6 +120,18 @@
                                             +"&bottomcount="+resObj.bottomcount
                                     });
                                 },1000);
+                            } else if(resObj.water){
+                                setTimeout(function(){
+                                    wx.miniProgram.redirectTo({
+                                        url: '/pages/water/water?number='+resObj.number
+                                    });
+                                },1000);
+                            }else if(resObj.box){
+                                setTimeout(function(){
+                                    wx.miniProgram.redirectTo({
+                                        url: '/pages/box/box?number='+resObj.number
+                                    });
+                                },1000);
                             } else {
                                 setTimeout(function(){
                                     wx.miniProgram.redirectTo({
@@ -147,6 +162,7 @@
         <div class="center">
             <canvas class="progress"></canvas>
             <image src="img/camera.png" class="camera" id="camera"></image>
+            <image src="https://www.veritrace.com.cn/video.gif" class="camera" id="cameravideo" hidden="true"></image>
         </div>
         <text class="info"></text>
     </div>

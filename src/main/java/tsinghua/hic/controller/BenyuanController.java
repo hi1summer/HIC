@@ -51,24 +51,33 @@ public class BenyuanController {
         try {
             String filenameString = ResourceUtils.getURL("").getPath()
                     + System.currentTimeMillis() + file.getOriginalFilename();
+
             BufferedInputStream in = new BufferedInputStream(
                     file.getInputStream());
             BufferedImage bi = ImageIO.read(in);
             int height = bi.getHeight();
             int width = bi.getWidth();
-            int newheight = 960 * width / height;
-            log.info(filenameString);
-            log.info("height" + height + "width" + width);
-            BufferedImage tag = new BufferedImage(newheight, 960,
-                    BufferedImage.TYPE_INT_RGB);
-            tag.getGraphics().drawImage(bi, 0, 0, newheight, 960, null);
+            BufferedImage tag;
+            if (height > width) {
+                int newWidth = 960 * width / height;
+                tag = new BufferedImage(newWidth, 960,
+                        BufferedImage.TYPE_INT_RGB);
+                tag.getGraphics().drawImage(bi, 0, 0, newWidth, 960, null);
+            } else {
+                int newHeight = 960 * height / width;
+                tag = new BufferedImage(960, newHeight,
+                        BufferedImage.TYPE_INT_RGB);
+                tag.getGraphics().drawImage(bi, 0, 0, 960, newHeight, null);
+            }
 
             BufferedOutputStream out = new BufferedOutputStream(
                     new FileOutputStream(filenameString));
             ImageIO.write(tag, "PNG", out);
             in.close();
             out.close();
+
             File tempFile = new File(filenameString);
+//            file.transferTo(tempFile);
             FileSystemResource resource = new FileSystemResource(tempFile);
 
             HttpHeaders headers = new HttpHeaders();
